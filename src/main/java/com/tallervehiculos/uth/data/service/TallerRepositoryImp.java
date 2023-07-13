@@ -2,9 +2,8 @@ package com.tallervehiculos.uth.data.service;
 
 import java.io.IOException;
 
-import com.tallervehiculos.uth.data.entity.ResponseOrden_reparacion;
+import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
-import com.tallervehiculos.uth.data.entity.ResponseVehiculo;
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,9 +40,9 @@ public class TallerRepositoryImp {
 	}
 	
 	
-	public ResponseOrden_reparacion getOrden() throws IOException {
-		Call<ResponseOrden_reparacion> call = taller.getDatabaseService().obtenerOrden();
-		Response<ResponseOrden_reparacion> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
+	public ResponseOrden getOrden() throws IOException {
+		Call<ResponseOrden> call = taller.getDatabaseService().obtenerOrden();
+		Response<ResponseOrden> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
 		if(response.isSuccessful()){
 			return response.body();
 		}else {
