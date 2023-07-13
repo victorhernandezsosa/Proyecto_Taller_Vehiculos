@@ -2,6 +2,7 @@ package com.tallervehiculos.uth.data.service;
 
 import java.io.IOException;
 
+
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
 
 import retrofit2.Call;
@@ -37,8 +38,6 @@ public class TallerRepositoryImp {
 			return null;
 		}
 	}
-	
-	
 	
 	
 }

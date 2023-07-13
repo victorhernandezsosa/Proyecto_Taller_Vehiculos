@@ -218,8 +218,15 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 		
 	}
     
+   /* public void refrescarGridOrden(List<Orden_reparacion> items_orden) {
+		Collection<Orden_reparacion> items = items_orden;
+		grid.setItems(items);
+		this.orden = items_orden;
+		
+	}*/
+    
+    
     public Grid<Orden_reparacion> getGrid(){
-    	
     	return grid;
     }
 }

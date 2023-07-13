@@ -17,6 +17,7 @@ public class ResponseTaller {
 	public void setItems(List<Vehiculo> items) {
 		this.items = items;
 	}
+
 	public boolean isHasMore() {
 		return hasMore;
 	}
