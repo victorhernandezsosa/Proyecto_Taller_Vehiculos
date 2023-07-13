@@ -1,7 +1,8 @@
 package com.tallervehiculos.uth.data.controller;
 
 import java.io.IOException;
-import com.tallervehiculos.uth.data.entity.ResponseTaller;
+
+import com.tallervehiculos.uth.data.entity.ResponseOrden_reparacion;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparacionViewModel;
 
@@ -20,7 +21,7 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 	@Override
 	public void consultarOrden() {
 		try {
-			ResponseTaller respuesta = this.modelo.getOrden();
+			ResponseOrden_reparacion respuesta = this.modelo.getOrden();
 			this.vista.refrescarGridOrden(respuesta.getItems_orden());
 		}catch(IOException e) {
 			e.printStackTrace();

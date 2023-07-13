@@ -2,22 +2,15 @@ package com.tallervehiculos.uth.data.entity;
 
 import java.util.List;
 
+public class ResponseOrden_reparacion {
 
-public class ResponseTaller {
 
-	private List<Vehiculo> items;
 	private List<Orden_reparacion> items_orden;
 	private boolean hasMore;
 	private int limit;
 	private int offset;
 	private int count;
 	
-	public List<Vehiculo> getItems() {
-		return items;
-	}
-	public void setItems(List<Vehiculo> items) {
-		this.items = items;
-	}
 	public List<Orden_reparacion> getItems_orden() {
 		return items_orden;
 	}
@@ -48,5 +41,6 @@ public class ResponseTaller {
 	public void setCount(int count) {
 		this.count = count;
 	}
+	
 	
 }
