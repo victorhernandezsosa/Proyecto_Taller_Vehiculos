@@ -1,5 +1,11 @@
 package com.tallervehiculos.uth.views.servicios;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.tallervehiculos.uth.data.controller.Servicios_interactor;
+import com.tallervehiculos.uth.data.controller.Servicios_interactorImp;
 import com.tallervehiculos.uth.data.entity.Servicios;
 import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.entity.repuestos;
@@ -30,13 +36,20 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 
 @PageTitle("Servicios")
 @Route(value = "servicios", layout = MainLayout.class)
-public class ServiciosView extends Main implements HasComponents, HasStyle {
+public class ServiciosView extends Main implements HasComponents, HasStyle, ServiciosViewModel {
 
 	private final Grid<Servicios> grid = new Grid<>(Servicios.class, false);
 	
+	private List<Servicios> servicio;
+	private Servicios_interactor controlador;
+	//private Servicios servicios;
+	
     public ServiciosView() {
+    	servicio = new ArrayList<>();
+    	this.controlador = new Servicios_interactorImp(this);
         constructUI();
         constructUI2();
+        this.controlador.consultarServicios();
     }
 
     private void constructUI() {
@@ -72,8 +85,15 @@ public class ServiciosView extends Main implements HasComponents, HasStyle {
 
     }
     
+    @Override
+	public void refrescarGridServicios(List<Servicios> servicios) {
+		Collection<Servicios> items = servicios;
+		grid.setItems(items);
+		this.servicio = servicios;
+    
+	}
+    
     public Grid<Servicios> getGrid(){
-    	
     	return grid;
     }
     

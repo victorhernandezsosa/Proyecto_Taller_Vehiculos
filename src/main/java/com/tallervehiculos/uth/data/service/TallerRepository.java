@@ -2,6 +2,7 @@ package com.tallervehiculos.uth.data.service;
 
 
 import com.tallervehiculos.uth.data.entity.ResponseOrden_reparacion;
+import com.tallervehiculos.uth.data.entity.ResponseServicios;
 import com.tallervehiculos.uth.data.entity.ResponseVehiculo;
 
 import retrofit2.Call;
@@ -28,4 +29,14 @@ public interface TallerRepository {
 	@GET("/pls/apex/allantorres_pa/vehiculos/orden_reparacion/")
 	Call<ResponseOrden_reparacion> obtenerOrden();
 	
+	@Headers({
+	    "Content-Type: application/json",
+	    "Accept-Charset: utf-8",
+	    "User-Agent: Retrofit-Sample-App"
+	})
+	@GET("/pls/apex/allantorres_pa/vehiculos/servicios/")
+	Call<ResponseServicios> obtenerServicios();
+	
+	
+
 }
