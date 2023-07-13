@@ -79,7 +79,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         //grid.addColumn(Orden_reparacion::getNombre).setHeader("Nombre").setAutoWidth(true);
         grid.addColumn(Orden_reparacion::getDescripcion_problema).setHeader("Problema").setAutoWidth(true);
         grid.addColumn(Orden_reparacion::getEstado_reparacion).setHeader("Estado").setAutoWidth(true);
-        /*grid.setItems(query -> orden_reparacionService.list(
+        /*grid.setItems(query -> Orden_reparacion(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());*/
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -96,6 +96,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
       //Mndo a traer las ordenes del repositorio
         this.controlador.consultarOrden();
+        
         
         // Configure Form
         cancel.addClickListener(e -> {
@@ -218,12 +219,6 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 		
 	}
     
-   /* public void refrescarGridOrden(List<Orden_reparacion> items_orden) {
-		Collection<Orden_reparacion> items = items_orden;
-		grid.setItems(items);
-		this.orden = items_orden;
-		
-	}*/
     
     
     public Grid<Orden_reparacion> getGrid(){
