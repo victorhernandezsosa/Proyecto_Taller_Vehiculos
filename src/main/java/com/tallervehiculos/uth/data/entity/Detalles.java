@@ -14,6 +14,7 @@ public class Detalles extends AbstractEntity {
   
 	private String Servicios;
     private String repuestos;
+    
 
     public String getTotal() {
   		return total;
