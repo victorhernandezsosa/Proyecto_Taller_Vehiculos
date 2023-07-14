@@ -217,7 +217,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		
 	}
 	
-public Grid<Vehiculo> getGrid(){
+	public Grid<Vehiculo> getGrid(){
     	
     	return grid;
     }

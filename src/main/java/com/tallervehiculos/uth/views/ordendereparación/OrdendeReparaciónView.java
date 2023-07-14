@@ -214,7 +214,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     	if(items_orden != null && !items_orden.isEmpty()) {
     		Collection<Orden_reparacion> items = items_orden;
     		grid.setItems(items);
-    		this.orden = new ArrayList<>(items_orden);
+    		this.orden = items_orden;
         	}
 		
 	}

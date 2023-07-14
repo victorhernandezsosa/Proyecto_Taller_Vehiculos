@@ -52,5 +52,4 @@ public interface TallerRepository {
 	Call<ResponseRepuestos> obtenerRepuesto();
 
 }
-}
 
