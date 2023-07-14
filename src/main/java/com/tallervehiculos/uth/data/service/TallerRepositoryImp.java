@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.tallervehiculos.uth.data.entity.ResponseDetalles;
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
+import com.tallervehiculos.uth.data.entity.ResponseServicios;
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -40,7 +41,6 @@ public class TallerRepositoryImp {
 		}
 	}
 	
-	
 	public ResponseOrden getOrden() throws IOException {
 		Call<ResponseOrden> call = taller.getDatabaseService().obtenerOrden();
 		Response<ResponseOrden> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
@@ -60,6 +60,7 @@ public class TallerRepositoryImp {
 			return null;
 		}
 	}
+
 	
 	public ResponseDetalles getDetalles() throws IOException {
 		Call<ResponseDetalles> call = taller.getDatabaseService().obtenerDetalles();
@@ -70,5 +71,6 @@ public class TallerRepositoryImp {
 			return null;
 		}
 	}
+
 
 }
