@@ -44,21 +44,21 @@ import com.vaadin.flow.component.treegrid.TreeGrid;
 @Uses(Icon.class)
 public class DetallesdeOrdenView extends Div implements DetallesdeOrdenViewModel {
 
-    private final Grid<Detalles> grid;
-    private List<Detalles> detalles;
+    private final Grid<Detalles> grid = new Grid<>(Detalles.class, false);
+    private List<Detalles> detalle;
     private Detalles_interactor controlador;
 
     //private final SamplePersonService samplePersonService;
 
     public DetallesdeOrdenView() {
     	
-    	detalles = new ArrayList<>();
+    	detalle = new ArrayList<>();
     	this.controlador = new Detalles_interactorImp(this);
 			
         setSizeFull();
         addClassNames("detallesde-orden-view");
 
-        grid = new Grid<>(Detalles.class, false);
+        
         grid.addColumn(Detalles::getCliente).setHeader("Clientes");
         grid.addColumn(Detalles::getPlaca).setHeader("Placa");
         grid.addColumn(Detalles::getServicios).setHeader("Servicios");
@@ -81,7 +81,7 @@ public class DetallesdeOrdenView extends Div implements DetallesdeOrdenViewModel
         
             Collection<Detalles> items = items_detalles;
             grid.setItems(items);
-            detalles = new ArrayList<>(items_detalles);
+            this.detalle = items_detalles;
         
     }
     

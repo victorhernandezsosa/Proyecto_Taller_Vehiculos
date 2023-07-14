@@ -11,6 +11,9 @@ public class ResponseDetalles {
 		private int limit;
 		private int offset;
 		private int count;
+
+		
+		
 		public List<Detalles> getItems() {
 			return items;
 		}
