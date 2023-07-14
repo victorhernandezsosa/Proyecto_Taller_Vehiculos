@@ -21,12 +21,16 @@ public class Detalles_interactorImp implements Detalles_interactor {
 	
 	@Override
 	public void consultarDetalles() {
-		try {
-			ResponseDetalles respuesta = this.modelo.getDetalles();
-			this.vista.refrescarGridDetalles(respuesta.getItems());
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
+		 try {
+		        ResponseDetalles respuesta = this.modelo.getDetalles();
+		        if (respuesta != null && respuesta.getDel() != null) {
+		            this.vista.refrescarGridDetalles(respuesta.getDel());
+		        } else {
+		            System.out.println("No se obtuvieron los detalles");
+		        }
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
 		
 	}
 }

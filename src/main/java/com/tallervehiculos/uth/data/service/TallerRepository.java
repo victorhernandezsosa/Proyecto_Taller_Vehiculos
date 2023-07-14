@@ -31,9 +31,7 @@ public interface TallerRepository {
 	@GET("/pls/apex/allantorres_pa/vehiculos/orden_reparacion/")
 	Call<ResponseOrden> obtenerOrden();
 
-	
 
-	
 	@Headers({
 	    "Content-Type: application/json",
 	    "Accept-Charset: utf-8",
@@ -48,10 +46,17 @@ public interface TallerRepository {
 	    "Accept-Charset: utf-8",
 	    "User-Agent: Retrofit-Sample-App"
 	})
-	@GET("/pls/apex/allantorres_pa/vehiculos/orden_sr/")
+	@GET("/pls/apex/allantorres_pa/vehiculos/detalles_orden/")
 	Call<ResponseDetalles> obtenerDetalles();
 	
+	@Headers({
+	    "Content-Type: application/json",
+	    "Accept-Charset: utf-8",
+	    "User-Agent: Retrofit-Sample-App"
+	})
+	@GET("/pls/apex/allantorres_pa/vehiculos/respuestos/")
 	
+	Call<ResponseRepuestos> obtenerRepuesto();
 
 }
 

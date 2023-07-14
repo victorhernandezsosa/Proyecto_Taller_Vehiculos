@@ -5,7 +5,7 @@ import java.util.List;
 public class ResponseDetalles {
 
 
-		private List<Detalles> items;
+		private List<Detalles> del;
 		//private List<Orden_reparacion> items_orden;
 		private boolean hasMore;
 		private int limit;
@@ -14,12 +14,14 @@ public class ResponseDetalles {
 
 		
 		
-		public List<Detalles> getItems() {
-			return items;
+		
+		public List<Detalles> getDel() {
+			return del;
 		}
-		public void setItems(List<Detalles> items) {
-			this.items = items;
+		public void setDel(List<Detalles> del) {
+			this.del = del;
 		}
+		
 		public boolean isHasMore() {
 			return hasMore;
 		}
