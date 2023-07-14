@@ -14,6 +14,7 @@ public class Detalles extends AbstractEntity {
   
 	private String Servicios;
     private String repuestos;
+    
 
     public String getTotal() {
   		return total;
@@ -33,18 +34,7 @@ public class Detalles extends AbstractEntity {
 	public void setCliente(String cliente) {
 		Cliente = cliente;
 	}
-	/*public Collection<String> getServicios() {
-		return Servicios;
-	}
-	public void setServicios(Collection<String> servicios) {
-		Servicios = servicios;
-	}
-	public Collection<String> getRepuestos() {
-		return repuestos;
-	}
-	public void setRepuestos(Collection<String> repuestos) {
-		this.repuestos = repuestos;
-	}*/
+
 	public String getPlaca() {
         return placa;
     }

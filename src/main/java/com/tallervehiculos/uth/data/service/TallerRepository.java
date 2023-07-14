@@ -1,5 +1,8 @@
 package com.tallervehiculos.uth.data.service;
 
+
+
+import com.tallervehiculos.uth.data.entity.ResponseDetalles;
 import com.tallervehiculos.uth.data.entity.ResponseRepuestos;
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
@@ -34,6 +37,11 @@ public interface TallerRepository {
 	@GET("/pls/apex/allantorres_pa/vehiculos/servicios/")
 	Call<ResponseServicios> obtenerServicios();
 
+
+	@GET("/pls/apex/allantorres_pa/vehiculos/detalles_orden/")
+	Call<ResponseDetalles> obtenerDetalles();
+	
+
 	@Headers({
 	    "Content-Type: application/json",
 	    "Accept-Charset: utf-8",
@@ -42,5 +50,7 @@ public interface TallerRepository {
 	@GET("/pls/apex/allantorres_pa/vehiculos/respuestos/")
 
 	Call<ResponseRepuestos> obtenerRepuesto();
-	
+
 }
+}
+

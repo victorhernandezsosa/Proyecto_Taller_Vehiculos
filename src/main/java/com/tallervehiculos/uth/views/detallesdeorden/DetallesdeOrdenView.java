@@ -1,5 +1,7 @@
 package com.tallervehiculos.uth.views.detallesdeorden;
 
+import com.tallervehiculos.uth.data.controller.Detalles_interactor;
+import com.tallervehiculos.uth.data.controller.Detalles_interactorImp;
 import com.tallervehiculos.uth.data.entity.Detalles;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.views.MainLayout;
@@ -40,25 +42,23 @@ import com.vaadin.flow.component.treegrid.TreeGrid;
 @PageTitle("Detalles de Orden")
 @Route(value = "detalles-orden", layout = MainLayout.class)
 @Uses(Icon.class)
-public class DetallesdeOrdenView extends Div {
+public class DetallesdeOrdenView extends Div implements DetallesdeOrdenViewModel {
 
-    private Grid<Detalles> grid;
+    private final Grid<Detalles> grid = new Grid<>(Detalles.class, false);
+    private List<Detalles> detalle;
+    private Detalles_interactor controlador;
 
     //private final SamplePersonService samplePersonService;
 
     public DetallesdeOrdenView() {
+    	
+    	detalle = new ArrayList<>();
+    	this.controlador = new Detalles_interactorImp(this);
+			
         setSizeFull();
         addClassNames("detallesde-orden-view");
 
-        VerticalLayout layout = new VerticalLayout( createGrid());
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        add(layout);
-    }
-
-    private Component createGrid() {
-        grid = new Grid<>(Detalles.class, false);
+        
         grid.addColumn(Detalles::getCliente).setHeader("Clientes");
         grid.addColumn(Detalles::getPlaca).setHeader("Placa");
         grid.addColumn(Detalles::getServicios).setHeader("Servicios");
@@ -70,15 +70,24 @@ public class DetallesdeOrdenView extends Div {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
 
-        return grid;
+        add(grid);
+        
+        this.controlador.consultarDetalles();
     }
  
-    private void refreshGrid() {
-        grid.getDataProvider().refreshAll();
+    
+    @Override
+    public void refrescarGridDetalles(List<Detalles> items_detalles) {
+        
+            Collection<Detalles> items = items_detalles;
+            grid.setItems(items);
+            this.detalle = items_detalles;
+        
     }
     
     public Grid<Detalles> getObtenerGrid(){
     	return grid;
     }
+    
 
 }
