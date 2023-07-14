@@ -1,7 +1,14 @@
 package com.tallervehiculos.uth.views.repuestos;
 
 import com.tallervehiculos.uth.views.MainLayout;
-import com.tallervehiculos.uth.data.entity.Orden_reparacion;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.tallervehiculos.uth.data.controller.Repuesto_Interactor;
+import com.tallervehiculos.uth.data.controller.Repuesto_InteractorImp;
+import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.entity.repuestos;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -29,13 +36,19 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 
 @PageTitle("Repuestos")
 @Route(value = "repuestos", layout = MainLayout.class)
-public class RepuestosView extends Main implements HasComponents, HasStyle {
+public class RepuestosView extends Main implements HasComponents, HasStyle,RepuestosViewModel {
 	
 	private final Grid<repuestos> grid = new Grid<>(repuestos.class, false);
+	
+	private List<repuestos> repuesto;
+	private Repuesto_Interactor controlador;
 
     public RepuestosView() {
+    	 repuesto = new ArrayList<>();
+    	this.controlador = new Repuesto_InteractorImp(this);
         constructUI();
         constructUI2();
+        this.controlador.consultarRepuesto();
     }
 
     private void constructUI() {
@@ -52,12 +65,9 @@ public class RepuestosView extends Main implements HasComponents, HasStyle {
 
         container.add(headerContainer);
         add(container);
-
     }
     
-    
     private void constructUI2() {
-    	
     	HorizontalLayout container = new HorizontalLayout();
         container.addClassNames(AlignItems.CENTER, JustifyContent.BETWEEN);
         
@@ -68,13 +78,20 @@ public class RepuestosView extends Main implements HasComponents, HasStyle {
     	grid.addClassName(Margin.Top.XLARGE);
     	container.add(grid);
         add(container);
-        
-
     }
     
+	@Override
+	public void refrescarGridRepuestos(List<repuestos> repuestos) {
+		Collection<repuestos> items = repuestos;
+   		grid.setItems(items);
+   		this.repuesto = repuestos;
+	}
+
     public Grid<repuestos> getGrid(){
     	
     	return grid;
     }
+
+
     
 }

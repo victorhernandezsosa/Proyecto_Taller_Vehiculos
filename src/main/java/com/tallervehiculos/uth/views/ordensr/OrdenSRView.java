@@ -1,5 +1,6 @@
 package com.tallervehiculos.uth.views.ordensr;
 
+import com.tallervehiculos.uth.data.entity.Servicios;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -41,6 +42,8 @@ import java.util.Set;
 @Route(value = "orden_SR", layout = MainLayout.class)
 public class OrdenSRView extends Div {
 
+	private Servicios Servicio;
+	
     public OrdenSRView() {
         addClassNames("orden-sr-view");
         addClassNames(Display.FLEX, FlexDirection.COLUMN, Height.FULL);
