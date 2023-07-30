@@ -1,57 +1,58 @@
 package com.tallervehiculos.uth.data.entity;
 
-import java.util.Collection;
 
 import jakarta.persistence.Entity;
 
 @Entity
-public class Detalles extends AbstractEntity {
+public class Detalles  extends AbstractEntity {
 
-    private Integer id_ordenSR;
-    private String Cliente;
+	
+    private String id_detalle;
+    private String nombre_cliente;
     private String placa;
+	private String nombre_servicio;
+    private String nombre_repuesto;
     private String total;
-  
-	private String Servicios;
-    private String repuestos;
     
-
-    public String getTotal() {
-  		return total;
-  	}
-  	public void setTotal(String total) {
-  		this.total = total;
-  	}
-    public Integer getId_ordenSR() {
-		return id_ordenSR;
+	public String getId_detalle() {
+		return id_detalle;
 	}
-	public void setId_ordenSR(Integer id_ordenSR) {
-		this.id_ordenSR = id_ordenSR;
+	public void setId_detalle(String id_detalle) {
+		this.id_detalle = id_detalle;
 	}
-	public String getCliente() {
-		return Cliente;
+	public String getNombre_cliente() {
+		return nombre_cliente;
 	}
-	public void setCliente(String cliente) {
-		Cliente = cliente;
+	public void setNombre_cliente(String nombre_cliente) {
+		this.nombre_cliente = nombre_cliente;
 	}
-
 	public String getPlaca() {
-        return placa;
-    }
-    public String getServicios() {
-		return Servicios;
-	}
-	public void setServicios(String servicios) {
-		Servicios = servicios;
-	}
-	public String getRepuestos() {
-		return repuestos;
-	}
-	public void setRepuestos(String repuestos) {
-		this.repuestos = repuestos;
+		return placa;
 	}
 	public void setPlaca(String placa) {
-        this.placa = placa;
-    }
+		this.placa = placa;
+	}
+	public String getNombre_servicio() {
+		return nombre_servicio;
+	}
+	public void setNombre_servicio(String nombre_servicio) {
+		this.nombre_servicio = nombre_servicio;
+	}
+	public String getNombre_repuesto() {
+		return nombre_repuesto;
+	}
+	public void setNombre_repuesto(String nombre_repuesto) {
+		this.nombre_repuesto = nombre_repuesto;
+	}
+	public String getTotal() {
+		return total;
+	}
+	public void setTotal(String total) {
+		this.total = total;
+	}
+    
+	
+    
+    
 
 }

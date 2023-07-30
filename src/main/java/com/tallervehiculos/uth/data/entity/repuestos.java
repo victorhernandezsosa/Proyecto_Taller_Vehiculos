@@ -5,15 +5,15 @@ import jakarta.persistence.Entity;
 @Entity
 public class repuestos extends AbstractEntity {
 
-    private Integer id_repuesto;
+    private String id_repuesto;
     private String nombre_repuesto;
     private String precio;
     
     
-	public Integer getId_repuesto() {
+	public String getId_repuesto() {
 		return id_repuesto;
 	}
-	public void setId_repuesto(Integer id_repuesto) {
+	public void setId_repuesto(String id_repuesto) {
 		this.id_repuesto = id_repuesto;
 	}
 	public String getNombre_repuesto() {

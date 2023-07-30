@@ -5,16 +5,16 @@ import jakarta.persistence.Entity;
 @Entity
 public class Servicios extends AbstractEntity {
 
-    private Integer id_servicio;
+    private String id_servicio;
     private String nombre_servicio;
     private String subservicio;
     private String costo;
     
     
-	public Integer getId_servicio() {
+	public String getId_servicio() {
 		return id_servicio;
 	}
-	public void setId_servicio(Integer id_servicio) {
+	public void setId_servicio(String id_servicio) {
 		this.id_servicio = id_servicio;
 	}
 	public String getNombre_servicio() {

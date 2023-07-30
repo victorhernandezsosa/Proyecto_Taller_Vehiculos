@@ -61,16 +61,5 @@ public class TallerRepositoryImp {
 		}
 	}
 
-	
-	public ResponseDetalles getDetalles() throws IOException {
-		Call<ResponseDetalles> call = taller.getDatabaseService().obtenerDetalles();
-		Response<ResponseDetalles> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
-		if(response.isSuccessful()){
-			return response.body();
-		}else {
-			return null;
-		}
-	}
-
 
 }

@@ -13,7 +13,7 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 	
 	public OrdenReparacion_InteractorImp(OrdendeReparacionViewModel vista) {
 		super();
-		this.modelo = OrdenRepositoryImp.getInstance("https://apex.oracle.com/", 600000L);
+		this.modelo = OrdenRepositoryImp.getInstance("https://apex.oracle.com", 600000L);
 		this.vista = vista;
 	}
 
@@ -21,7 +21,7 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 	public void consultarOrden() {
 		try {
 			ResponseOrden respuesta = this.modelo.getOrden();
-			this.vista.refrescarGridOrden(respuesta.getItems_orden());
+			this.vista.refrescarGridOrden(respuesta.getItems());
 		}catch(IOException e) {
 			e.printStackTrace();
 		}

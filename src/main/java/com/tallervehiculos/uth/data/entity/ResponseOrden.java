@@ -4,18 +4,18 @@ import java.util.List;
 
 public class ResponseOrden {
 	
-	private List<Orden_reparacion> items_orden;
+	private List<Orden_reparacion> items;
 	private boolean hasMore;
 	private int limit;
 	private int offset;
 	private int count;
 	
-	
-	public List<Orden_reparacion> getItems_orden() {
-		return items_orden;
+
+	public List<Orden_reparacion> getItems() {
+		return items;
 	}
-	public void setItems_orden(List<Orden_reparacion> items_orden) {
-		this.items_orden = items_orden;
+	public void setItems(List<Orden_reparacion> items) {
+		this.items = items;
 	}
 	public boolean isHasMore() {
 		return hasMore;

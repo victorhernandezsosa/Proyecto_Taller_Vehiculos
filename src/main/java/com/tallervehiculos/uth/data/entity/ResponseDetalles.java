@@ -3,25 +3,19 @@ package com.tallervehiculos.uth.data.entity;
 import java.util.List;
 
 public class ResponseDetalles {
-
-
-		private List<Detalles> del;
-		//private List<Orden_reparacion> items_orden;
+	
+		private List<Detalles> items;
 		private boolean hasMore;
 		private int limit;
 		private int offset;
 		private int count;
-
-		
-		
-		
-		public List<Detalles> getDel() {
-			return del;
+			
+		public List<Detalles> getItems() {
+			return items;
 		}
-		public void setDel(List<Detalles> del) {
-			this.del = del;
+		public void setItems(List<Detalles> items) {
+			this.items = items;
 		}
-		
 		public boolean isHasMore() {
 			return hasMore;
 		}
@@ -49,6 +43,4 @@ public class ResponseDetalles {
 		
 		
 		
-	
-
 }

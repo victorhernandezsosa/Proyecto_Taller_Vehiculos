@@ -92,7 +92,7 @@ class TestPantallas {
 		System.out.println("Se está ejecutando la prueba de Repuestos");
 		List<repuestos> listarepuesto = new ArrayList<>();
 		repuestos re1 = new repuestos();
-		re1.setId_repuesto(2);
+		re1.setId_repuesto("2");
 		re1.setNombre_repuesto("Pastillas de freno");
 		re1.setPrecio("15");
 		listarepuesto.add(re1);
@@ -116,7 +116,7 @@ class TestPantallas {
 		System.out.println("Se está ejecutando la prueba de Servicio");
 		List<Servicios> listaservicio = new ArrayList<>();
 		Servicios serv1 = new Servicios();
-		serv1.setId_servicio(1);
+		serv1.setId_servicio("1");
 		serv1.setNombre_servicio("Cambio de aceite");
 		serv1.setSubservicio("Aceite sintético");
 		serv1.setCosto("50");
