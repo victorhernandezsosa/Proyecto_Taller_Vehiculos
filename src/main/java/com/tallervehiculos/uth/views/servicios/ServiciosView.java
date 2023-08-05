@@ -1,20 +1,25 @@
 package com.tallervehiculos.uth.views.servicios;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-
+import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.data.controller.Servicios_interactor;
 import com.tallervehiculos.uth.data.controller.Servicios_interactorImp;
 
 import com.tallervehiculos.uth.data.entity.Servicios;
-
+import com.tallervehiculos.uth.data.entity.ServiciosReport;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparaciónView;
-
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
@@ -23,8 +28,9 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
-
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.notification.Notification.Position;
@@ -81,6 +87,19 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     	grid.addColumn(Servicios::getSubservicio).setHeader("Subservicio");
     	grid.addColumn(Servicios::getCosto).setHeader("Costo");
     	grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+    	
+    	GridContextMenu<Servicios> menu = grid.addContextMenu();
+    	menu.addItem("Generar Reporte", event -> {
+    		if(this.servicio.isEmpty()) {
+        		Notification.show("No hay datos para generar el reporte");
+        	}else {
+        		Notification.show("Generando reporte PDF...");
+            	generarReporteServicios();
+        	}
+    	});
+    	
+    	
+    	
     	grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 populateForm(event.getValue());
@@ -117,7 +136,68 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         
     }
     
-    @Override
+    private void generarReporteServicios() {
+        ReportGenerator generador = new ReportGenerator();
+        Map<String, Object> parametros = new HashMap<>();
+        ServiciosReport datasource = new ServiciosReport();
+        datasource.setData(servicio);
+        String rutaPDF = generador.generarReportePDF("reporte_servicio", parametros, datasource);
+
+        if (rutaPDF != null) {
+            StreamResource resource = new StreamResource("reporte.pdf", () -> {
+                try {
+                    return new FileInputStream(rutaPDF);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
+
+            Anchor url = new Anchor(resource, "Abrir reporte PDF");
+            url.setTarget("_blank");
+
+            add(url);
+
+            Notification notificacion = new Notification(url);
+            notificacion.setDuration(20000);
+            notificacion.open();
+        } else {
+            Notification notificacion = new Notification("Ocurrió un problema al generar el reporte");
+            notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notificacion.setDuration(10000);
+            notificacion.open();
+        }
+    }
+    
+    /*private void generarReporteServicios() {
+        ReportGenerator generador = new ReportGenerator();
+        Map<String, Object> parametros = new HashMap<>();
+        ServiciosReport datasource = new ServiciosReport();
+        datasource.setData(servicio);
+        byte[] pdfBytes = generador.generarReportePDF("reporte_servicio", parametros, datasource);
+
+        if (pdfBytes != null) {
+            // Crear un recurso StreamResource para mostrar el PDF en una nueva página
+            StreamResource resource = new StreamResource("reporte.pdf", () -> new ByteArrayInputStream(pdfBytes));
+
+            Anchor url = new Anchor(resource, "Abrir reporte PDF");
+            url.setTarget("_blank");
+
+            // Agregar el enlace a la interfaz de usuario
+            add(url);
+
+            Notification notificacion = new Notification("Reporte generado correctamente");
+            notificacion.setDuration(20000);
+            notificacion.open();
+        } else {
+            Notification notificacion = new Notification("Ocurrió un problema al generar el reporte");
+            notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notificacion.setDuration(10000);
+            notificacion.open();
+        }
+	}*/
+
+	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<String> servicioId = event.getRouteParameters().get(SERVICIO_ID);
         boolean encontrado = false;
