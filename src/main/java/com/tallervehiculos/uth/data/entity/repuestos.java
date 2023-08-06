@@ -8,8 +8,8 @@ public class repuestos extends AbstractEntity {
     private String id_repuesto;
     private String nombre_repuesto;
     private String precio;
-    
-    
+
+
 	public String getId_repuesto() {
 		return id_repuesto;
 	}
@@ -28,7 +28,7 @@ public class repuestos extends AbstractEntity {
 	public void setPrecio(String precio) {
 		this.precio = precio;
 	}
-    
-    
-    
+
+
+
 }

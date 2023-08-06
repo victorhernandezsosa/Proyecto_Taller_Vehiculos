@@ -8,7 +8,7 @@ public class ResponseRepuestos {
 	private int limit;
 	private int offset;
 	private int count;
-	
+
 	public List<repuestos> getItems() {
 		return items;
 	}
@@ -39,6 +39,6 @@ public class ResponseRepuestos {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 
 }

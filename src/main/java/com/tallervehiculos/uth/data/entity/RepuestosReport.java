@@ -6,28 +6,29 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
-public class ServiciosReport implements JRDataSource{
-
-	private List<Servicios> servicio;
+public class RepuestosReport implements JRDataSource{
+	
+	private List<repuestos> repuesto;
 	private int counter = -1;
 	private int maxCounter = 0;
+	
+	public void setData(List<repuestos> repuesto) {
+		this.repuesto = repuesto;
+		this.maxCounter = this.repuesto.size()-1;
+	}
 
-	public void setData(List<Servicios> servicio) {
-		this.servicio = servicio;
-		this.maxCounter = this.servicio.size() -1;
+	
+
+	public List<repuestos> getRepuesto() {
+		return repuesto;
 	}
 
 
 
-
-	public List<Servicios> getServicio() {
-		return servicio;
+	public void setRepuesto(List<repuestos> repuesto) {
+		this.repuesto = repuesto;
 	}
 
-
-	public void setServicio(List<Servicios> servicio) {
-		this.servicio = servicio;
-	}
 
 
 	public int getCounter() {
@@ -58,14 +59,13 @@ public class ServiciosReport implements JRDataSource{
 	@Override
 	public Object getFieldValue(JRField jrField) throws JRException {
 		if("ID".equals(jrField.getName())) {
-			return servicio.get(counter).getId_servicio().toString();
-		}else if("SERVICIO".equals(jrField.getName())) {
-			return servicio.get(counter).getNombre_servicio();
-		}else if("SUBSERVICIO".equals(jrField.getName())) {
-			return servicio.get(counter).getSubservicio();
-		}else if("COSTO".equals(jrField.getName())) {
-			return servicio.get(counter).getCosto();
+			return repuesto.get(counter).getId_repuesto().toString();
+		}else if("REPUESTO".equals(jrField.getName())) {
+			return repuesto.get(counter).getNombre_repuesto();
+		}else if("PRECIO".equals(jrField.getName())) {
+			return repuesto.get(counter).getPrecio();
 		}
+
 		return "";
 
 	}

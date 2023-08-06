@@ -3,13 +3,13 @@ package com.tallervehiculos.uth.data.entity;
 import java.util.List;
 
 public class ResponseOrden {
-	
+
 	private List<Orden_reparacion> items;
 	private boolean hasMore;
 	private int limit;
 	private int offset;
 	private int count;
-	
+
 
 	public List<Orden_reparacion> getItems() {
 		return items;
@@ -41,6 +41,6 @@ public class ResponseOrden {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
-	
+
+
 }

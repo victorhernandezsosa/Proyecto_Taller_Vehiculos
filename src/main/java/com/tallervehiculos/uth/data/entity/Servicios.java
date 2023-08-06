@@ -9,8 +9,8 @@ public class Servicios extends AbstractEntity {
     private String nombre_servicio;
     private String subservicio;
     private String costo;
-    
-    
+
+
 	public String getId_servicio() {
 		return id_servicio;
 	}
@@ -36,5 +36,5 @@ public class Servicios extends AbstractEntity {
 		this.costo = costo;
 	}
 
-    
+
 }

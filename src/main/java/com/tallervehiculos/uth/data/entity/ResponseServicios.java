@@ -11,7 +11,7 @@ public class ResponseServicios {
 	private int limit;
 	private int offset;
 	private int count;
-	
+
 	public List<Servicios> getItems_servicios() {
 		return items;
 	}
@@ -42,5 +42,5 @@ public class ResponseServicios {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 }

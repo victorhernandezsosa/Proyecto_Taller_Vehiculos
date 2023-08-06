@@ -11,14 +11,14 @@ public class Servicios_interactorImp implements Servicios_interactor {
 
 	private TallerRepositoryImp modelo;
 	private ServiciosViewModel vista;
-	
+
 	public Servicios_interactorImp(ServiciosViewModel vista) {
 		super();
 		this.modelo = TallerRepositoryImp.getInstance("https://apex.oracle.com/", 600000L);
 		this.vista = vista;
 	}
 
-	
+
 	@Override
 	public void consultarServicios() {
 		try {
@@ -27,7 +27,7 @@ public class Servicios_interactorImp implements Servicios_interactor {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }

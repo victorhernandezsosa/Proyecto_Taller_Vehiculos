@@ -1,5 +1,7 @@
 package com.tallervehiculos.uth.views;
 
+import org.vaadin.lineawesome.LineAwesomeIcon;
+
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparaciónView;
 import com.tallervehiculos.uth.views.ordensr.OrdenSRView;
 import com.tallervehiculos.uth.views.registrodevehículo.RegistrodeVehículoView;
@@ -16,7 +18,6 @@ import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
  * The main view is a top-level placeholder for other views.

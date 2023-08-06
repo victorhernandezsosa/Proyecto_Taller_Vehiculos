@@ -1,6 +1,5 @@
 package com.tallervehiculos.uth.views.servicios;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,15 +10,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import com.tallervehiculos.uth.data.service.ReportGenerator;
+
 import com.tallervehiculos.uth.data.controller.Servicios_interactor;
 import com.tallervehiculos.uth.data.controller.Servicios_interactorImp;
-
 import com.tallervehiculos.uth.data.entity.Servicios;
 import com.tallervehiculos.uth.data.entity.ServiciosReport;
+import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparaciónView;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
@@ -29,12 +27,11 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.notification.Notification.Position;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
@@ -43,6 +40,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 
 
 
@@ -55,19 +53,19 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     private TextField Nombre_servicio;
     private TextField Subservicio;
     private TextField Costo;
-    
+
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
-    
+
     private final String SERVICIO_ID = "ServicioID";
     private final String SERVICIO_EDIT_ROUTE_TEMPLATE = "editar-servicio/%s/edit";
 
-	
+
 	private List<Servicios> servicio;
 	private Servicios servi;
 	private Servicios_interactor controlador;
 	//private Servicios servicios;
-	
+
     public ServiciosView() {
     	setSizeFull();
         addClassNames("servicios-view");
@@ -75,19 +73,19 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     	this.controlador = new Servicios_interactorImp(this);
        // constructUI();
         //constructUI2();
-        
+
     	SplitLayout splitLayout = new SplitLayout();
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
         add(splitLayout);
-        
-        
+
+
         grid.addColumn(Servicios::getId_servicio).setHeader("ID");
     	grid.addColumn(Servicios::getNombre_servicio).setHeader("Servicio");
     	grid.addColumn(Servicios::getSubservicio).setHeader("Subservicio");
     	grid.addColumn(Servicios::getCosto).setHeader("Costo");
     	grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-    	
+
     	GridContextMenu<Servicios> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {
     		if(this.servicio.isEmpty()) {
@@ -97,19 +95,19 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
             	generarReporteServicios();
         	}
     	});
-    	
-    	
-    	
+
+
+
     	grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 populateForm(event.getValue());
             } else {
-                clearForm(); 
+                clearForm();
             }
         });
-    	
+
         this.controlador.consultarServicios();
-        
+
         cancel.addClickListener(e -> {
             clearForm();
             refreshGrid();
@@ -132,10 +130,10 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
-        
-        
+
+
     }
-    
+
     private void generarReporteServicios() {
         ReportGenerator generador = new ReportGenerator();
         Map<String, Object> parametros = new HashMap<>();
@@ -144,7 +142,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         String rutaPDF = generador.generarReportePDF("reporte_servicio", parametros, datasource);
 
         if (rutaPDF != null) {
-            StreamResource resource = new StreamResource("reporte.pdf", () -> {
+            StreamResource resource = new StreamResource("Reporte de Servicio.pdf", () -> {
                 try {
                     return new FileInputStream(rutaPDF);
                 } catch (FileNotFoundException e) {
@@ -168,34 +166,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
             notificacion.open();
         }
     }
-    
-    /*private void generarReporteServicios() {
-        ReportGenerator generador = new ReportGenerator();
-        Map<String, Object> parametros = new HashMap<>();
-        ServiciosReport datasource = new ServiciosReport();
-        datasource.setData(servicio);
-        byte[] pdfBytes = generador.generarReportePDF("reporte_servicio", parametros, datasource);
 
-        if (pdfBytes != null) {
-            // Crear un recurso StreamResource para mostrar el PDF en una nueva página
-            StreamResource resource = new StreamResource("reporte.pdf", () -> new ByteArrayInputStream(pdfBytes));
-
-            Anchor url = new Anchor(resource, "Abrir reporte PDF");
-            url.setTarget("_blank");
-
-            // Agregar el enlace a la interfaz de usuario
-            add(url);
-
-            Notification notificacion = new Notification("Reporte generado correctamente");
-            notificacion.setDuration(20000);
-            notificacion.open();
-        } else {
-            Notification notificacion = new Notification("Ocurrió un problema al generar el reporte");
-            notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            notificacion.setDuration(10000);
-            notificacion.open();
-        }
-	}*/
 
 	@Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -219,13 +190,13 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         	}
         }
     }
-    
-    
+
+
     private void clearForm() {
         populateForm(null);
     }
-    
-    
+
+
     private void populateForm(Servicios value) {
     	this.servi = value;
         if(value == null){
@@ -240,7 +211,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
             this.Costo.setValue(value.getCosto());
         }
     }
-    
+
     private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         editorLayoutDiv.setClassName("editor-layout");
@@ -264,7 +235,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         splitLayout.setSplitterPosition(80);
 
         splitLayout.setSizeFull();
-        
+
     }
 
     private void createButtonLayout(VerticalLayout editorContentLayout) {
@@ -273,7 +244,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonLayout.add(save, cancel);
-        
+
         Div spacer = new Div(); // Div para agregar espacio entre el formulario y los botones
         spacer.setSizeFull();
         editorContentLayout.add(spacer);
@@ -281,7 +252,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
 
     }
 
-    
+
     private void createGridLayout(SplitLayout splitLayout) {
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
@@ -293,17 +264,16 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         grid.select(null);
         grid.getDataProvider().refreshAll();
     }
-    
+
     @Override
 	public void refrescarGridServicios(List<Servicios> servicios) {
 		Collection<Servicios> items = servicios;
 		grid.setItems(items);
 		this.servicio = servicios;
-		System.out.println("DetallesdeOrdenView : " + servicio);
 	}
-    
+
     public Grid<Servicios> getGrid(){
     	return grid;
     }
-    
+
 }

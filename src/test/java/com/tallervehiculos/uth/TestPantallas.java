@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.tallervehiculos.uth.data.entity.Detalles;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.data.entity.Servicios;
 import com.tallervehiculos.uth.data.entity.Vehiculo;
@@ -34,7 +33,7 @@ class TestPantallas {
 		carview = new RegistrodeVehículoView();
 		repview = new RepuestosView();
 		serView = new ServiciosView();
-		
+
 	}
 
 	@Test
@@ -47,17 +46,17 @@ class TestPantallas {
 	    selec2.setId_orden("2");
 	    Orden_reparacion selec3 = new Orden_reparacion();
 	    selec3.setId_orden("3");
-	    
+
 	    items.add(selec1);
 	    items.add(selec2);
 	    items.add(selec3);
-	    
+
 	    Grid<Orden_reparacion> grid = vista.getGrid();
 	    grid.setItems(items);
-	    
+
 	    Assertions.assertEquals(items, vista.getGrid().getDataProvider().fetch(new Query<>()).collect(Collectors.toList()));
 	}
-	
+
 	@Test
 	public void RegistroVehiculoTest() {
 		System.out.println("Se está ejecutando la prueba de Registro de Vehiculos");
@@ -65,14 +64,14 @@ class TestPantallas {
 		Vehiculo car1 = new Vehiculo();
 		car1.setId_vehiculo("1");
 		car.add(car1);
-		
+
 		Grid<Vehiculo> grid = carview.getGrid();
 		grid.setItems(car);
-		
+
 		List<Vehiculo> mostrardatos = carview.getGrid().getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
 		assertEquals(car.size(), mostrardatos.size());
 	    assertTrue(car.contains(car1));
-	
+
 	}
 
 	@Test
@@ -84,21 +83,21 @@ class TestPantallas {
 		re1.setNombre_repuesto("Pastillas de freno");
 		re1.setPrecio("15");
 		listarepuesto.add(re1);
-		
+
 		List<repuestos> listaherramientas = listarepuesto.stream()
 	            .filter(repuesto -> repuesto.getNombre_repuesto().equals("Pastillas de freno"))
 	            .collect(Collectors.toList());
-		
+
 		Grid<repuestos> grid = repview.getGrid();
 		grid.setItems(listaherramientas);
-		
+
 		List<repuestos> mostrardatos = repview.getGrid().getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
 		assertEquals(listaherramientas.size(), mostrardatos.size());
 		assertTrue(mostrardatos.contains(re1));
-		
-		
+
+
 	}
-	
+
 	@Test
 	public void ServicioTest() {
 		System.out.println("Se está ejecutando la prueba de Servicio");
@@ -109,13 +108,13 @@ class TestPantallas {
 		serv1.setSubservicio("Aceite sintético");
 		serv1.setCosto("50");
 		listaservicio.add(serv1);
-		
-		
-		
-		
+
+
+
+
 		Grid<Servicios> grid = serView.getGrid();
 		grid.setItems(listaservicio);
-		
+
 		List<Servicios> mostrardatos = serView.getGrid().getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
 		assertEquals(listaservicio.size(), mostrardatos.size());
 		assertTrue(mostrardatos.contains(serv1));

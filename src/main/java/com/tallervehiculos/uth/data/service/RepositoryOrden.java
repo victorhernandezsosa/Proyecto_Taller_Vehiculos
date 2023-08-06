@@ -12,11 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RepositoryOrden {
 	private Retrofit retrofit;
 	private HttpLoggingInterceptor interceptor = null;
-	
+
 	public RepositoryOrden(String url, Long timeout) {
 		this.interceptor = new HttpLoggingInterceptor();
 		this.interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-		
+
 		OkHttpClient client = new OkHttpClient.Builder()
 				.addInterceptor(interceptor)
 				.connectTimeout(timeout, TimeUnit.MILLISECONDS)
@@ -29,7 +29,7 @@ public class RepositoryOrden {
 				.addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSZ").create()))
 				.build();
 	}
-	
+
 	public OrdenRepository getDatabaseService() {
 		return retrofit.create(OrdenRepository.class);
 	}

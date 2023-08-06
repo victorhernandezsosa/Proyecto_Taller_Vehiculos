@@ -9,7 +9,7 @@ public class OrdenSR extends AbstractEntity {
     private String orden_id;
     private Integer servicio_id;
     private Integer repuesto_id;
-    
+
 	public Integer getId_ordensr() {
 		return id_ordensr;
 	}

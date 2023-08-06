@@ -10,7 +10,7 @@ public class ResponseOrdenSR {
 	private int limit;
 	private int offset;
 	private int count;
-	
+
 	public List<OrdenSR> getItems_ordenSR() {
 		return items_OrdenSR;
 	}
@@ -41,5 +41,5 @@ public class ResponseOrdenSR {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 }

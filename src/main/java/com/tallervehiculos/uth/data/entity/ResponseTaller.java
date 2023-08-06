@@ -10,7 +10,7 @@ public class ResponseTaller {
 	private int limit;
 	private int offset;
 	private int count;
-	
+
 	public List<Vehiculo> getItems() {
 		return items;
 	}
@@ -42,5 +42,5 @@ public class ResponseTaller {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 }

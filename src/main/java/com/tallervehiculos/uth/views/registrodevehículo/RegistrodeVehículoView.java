@@ -1,9 +1,23 @@
 package com.tallervehiculos.uth.views.registrodevehículo;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_InteractorImp;
-import com.tallervehiculos.uth.data.entity.Orden_reparacion;
+import com.tallervehiculos.uth.data.entity.RegistroVehiculoReport;
+import com.tallervehiculos.uth.data.entity.Servicios;
+import com.tallervehiculos.uth.data.entity.ServiciosReport;
 import com.tallervehiculos.uth.data.entity.Vehiculo;
+import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -11,6 +25,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
@@ -18,21 +34,12 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import com.vaadin.flow.server.StreamResource;
 
 @PageTitle("Registro de Vehículo")
 @Route(value = "registro-vehiculo/:vehiculoID?/:action?(edit)", layout = MainLayout.class)
@@ -50,19 +57,19 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     private TextField modelo;
     private TextField placa;
     private List<Vehiculo> vehiculos;
-    
+
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
 
     private Vehiculo vehiculo;
     private OrdenVehiculos_Interactor controlador;
-    
+
     public RegistrodeVehículoView() {
-   
+
         addClassNames("registrode-vehículo-view");
         vehiculos = new ArrayList<>();
         this.controlador = new OrdenVehiculos_InteractorImp(this);
-        
+
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
@@ -81,6 +88,16 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());*/
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        
+        GridContextMenu<Vehiculo> menu = grid.addContextMenu();
+    	menu.addItem("Generar Reporte", event -> {
+    		if(this.vehiculos.isEmpty()) {
+        		Notification.show("No hay datos para generar el reporte");
+        	}else {
+        		Notification.show("Generando reporte PDF...");
+            	generarReporteRegistro();
+        	}
+    	});
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
@@ -94,7 +111,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 
         //Mndo a traer los vhiculos del repositorio
         this.controlador.consultarVehiculo();
-        
+
         // Configure Form
         cancel.addClickListener(e -> {
             clearForm();
@@ -120,12 +137,46 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         });
     }
 
-    @Override
+    private void generarReporteRegistro() {
+    	ReportGenerator generador = new ReportGenerator();
+        Map<String, Object> parametros = new HashMap<>();
+        RegistroVehiculoReport datasource = new RegistroVehiculoReport();
+        datasource.setData(vehiculos);
+        String rutaPDF = generador.generarReportePDF("reporte_registro", parametros, datasource);
+
+        if (rutaPDF != null) {
+            StreamResource resource = new StreamResource("Reporte de Registro Vehiculos.pdf", () -> {
+                try {
+                    return new FileInputStream(rutaPDF);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
+
+            Anchor url = new Anchor(resource, "Abrir reporte PDF");
+            url.setTarget("_blank");
+
+            add(url);
+
+            Notification notificacion = new Notification(url);
+            notificacion.setDuration(20000);
+            notificacion.open();
+        } else {
+            Notification notificacion = new Notification("Ocurrió un problema al generar el reporte");
+            notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notificacion.setDuration(10000);
+            notificacion.open();
+        }
+		
+	}
+
+	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<String> vehiculoId = event.getRouteParameters().get(VEHICULO_ID);
         boolean encontrado = false;
         if (vehiculoId.isPresent()) {
-        	
+
         	for(Vehiculo e: this.vehiculos) {
         		if(e.getId_vehiculo().equals(vehiculoId.get())) {
         			populateForm(e);
@@ -133,7 +184,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         			break;
         		}
         	}
-        	
+
         	if(!encontrado) {
         		Notification.show(String.format("El Vehiculo con ID = %s", vehiculoId.get()+" no fue encontrado"),
                         3000, Notification.Position.BOTTOM_START);
@@ -214,11 +265,11 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		Collection<Vehiculo> items = vehiculos;
 		grid.setItems(items);
 		this.vehiculos = vehiculos;
-		
+
 	}
-	
+
 	public Grid<Vehiculo> getGrid(){
-    	
+
     	return grid;
     }
 }

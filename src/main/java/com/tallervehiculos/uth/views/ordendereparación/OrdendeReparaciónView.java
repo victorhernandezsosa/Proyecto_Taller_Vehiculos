@@ -1,19 +1,32 @@
 package com.tallervehiculos.uth.views.ordendereparación;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_InteractorImp;
-import com.tallervehiculos.uth.data.controller.OrdenVehiculos_Interactor;
-import com.tallervehiculos.uth.data.controller.OrdenVehiculos_InteractorImp;
+import com.tallervehiculos.uth.data.entity.OrdenReparacionReport;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
-import com.tallervehiculos.uth.data.entity.Vehiculo;
+import com.tallervehiculos.uth.data.entity.Servicios;
+import com.tallervehiculos.uth.data.entity.ServiciosReport;
+import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
-import com.tallervehiculos.uth.views.registrodevehículo.RegistrodeVehículoView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
@@ -21,22 +34,11 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import com.vaadin.flow.server.StreamResource;
 
 @PageTitle("Orden de Reparación")
 @Route(value = "orden-reparacion/:orden_reparacionID?/:action?(edit)", layout = MainLayout.class)
@@ -55,10 +57,10 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
-    
+
     private Orden_reparacion ordenes;
     private OrdenReparacion_Interactor controlador;
-  
+
     public OrdendeReparaciónView() {
 
         addClassNames("ordende-reparación-view");
@@ -83,6 +85,16 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());*/
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        
+        GridContextMenu<Orden_reparacion> menu = grid.addContextMenu();
+    	menu.addItem("Generar Reporte", event -> {
+    		if(this.orden.isEmpty()) {
+        		Notification.show("No hay datos para generar el reporte");
+        	}else {
+        		Notification.show("Generando reporte PDF...");
+            	generarReporteReparacion();
+        	}
+    	});
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
@@ -96,8 +108,8 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
       //Mndo a traer las ordenes del repositorio
         this.controlador.consultarOrden();
-        
-        
+
+
         // Configure Form
         cancel.addClickListener(e -> {
             clearForm();
@@ -123,7 +135,41 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         });
     }
 
-    @Override
+    private void generarReporteReparacion() {
+    	ReportGenerator generador = new ReportGenerator();
+        Map<String, Object> parametros = new HashMap<>();
+        OrdenReparacionReport datasource = new OrdenReparacionReport();
+        datasource.setData(orden);
+        String rutaPDF = generador.generarReportePDF("reporte_Orden", parametros, datasource);
+
+        if (rutaPDF != null) {
+            StreamResource resource = new StreamResource("Reporte de Orden Reparacion.pdf", () -> {
+                try {
+                    return new FileInputStream(rutaPDF);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
+
+            Anchor url = new Anchor(resource, "Abrir reporte PDF");
+            url.setTarget("_blank");
+
+            add(url);
+
+            Notification notificacion = new Notification(url);
+            notificacion.setDuration(20000);
+            notificacion.open();
+        } else {
+            Notification notificacion = new Notification("Ocurrió un problema al generar el reporte");
+            notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notificacion.setDuration(10000);
+            notificacion.open();
+        }
+		
+	}
+
+	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<String> orden_reparacionId = event.getRouteParameters().get(ORDEN_REPARACION_ID);
         boolean encontrado = false;
@@ -194,7 +240,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
     private void populateForm(Orden_reparacion value) {
     	this.ordenes = value;
-    	
+
         if(value == null){
         	this.id_orden.setValue("");
             this.vehiculo_id.setValue("");
@@ -208,7 +254,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
         }
     }
-    
+
     @Override
 	public void refrescarGridOrden(List<Orden_reparacion> items_orden) {
     	if(items_orden != null && !items_orden.isEmpty()) {
@@ -216,11 +262,11 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     		grid.setItems(items);
     		this.orden = items_orden;
         	}
-		
+
 	}
-    
-    
-    
+
+
+
     public Grid<Orden_reparacion> getGrid(){
     	return grid;
     }

@@ -13,9 +13,9 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReportGenerator {
-	
+
 	private String ubicacion;
-	
+
 	public String generarReportePDF(String reportName, Map<String, Object> parameters, JRDataSource datasource) {
 	    String rutaPDF = null;
 
@@ -30,26 +30,6 @@ public class ReportGenerator {
 	    }
 	    return rutaPDF;
 	}
-	
-	/*public class ReportGenerator {
-		
-		private String ubicacion;
-		
-
-		public byte[] generarReportePDF(String reportName, Map<String, Object> parameters, JRDataSource datasource) {
-		byte[] pdfBytes = null;
-		
-		try {
-			JasperReport reporte = (JasperReport)JRLoader.loadObjectFromFile(fetchReportPath(reportName+".jasper"));
-			JasperPrint impresora = JasperFillManager.fillReport(reporte, parameters, datasource);
-			String rutaPDF = generateReportSavePath() + reportName + ".pdf";
-			this.ubicacion = rutaPDF;
-			pdfBytes = JasperExportManager.exportReportToPdf(impresora);
-		}catch(Exception error) {
-			error.printStackTrace();
-		}
-		return pdfBytes;
-	}*/
 
 	private String generateReportSavePath() {
 		String path = null;
@@ -70,10 +50,10 @@ public class ReportGenerator {
 		}
 		return path;
 	}
-	
+
 	public String getUbicacion() {
 		return ubicacion;
 	}
-	
+
 
 }

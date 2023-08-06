@@ -11,7 +11,7 @@ public class Orden_reparacion extends AbstractEntity {
 	private String descripcion_problema;
     private String estado_reparacion;
 
-    
+
     /*public String getNombre() {
 		return nombre;
 	}
