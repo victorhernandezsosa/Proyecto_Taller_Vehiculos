@@ -2,7 +2,6 @@ package com.tallervehiculos.uth.data.service;
 
 import java.io.IOException;
 
-import com.tallervehiculos.uth.data.entity.ResponseDetalles;
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;

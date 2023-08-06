@@ -33,7 +33,4 @@ public class RepositoryTaller {
 		return retrofit.create(TallerRepository.class);
 	}
 	
-	public DetallesRepository getObtenerDataService() {
-		return retrofit.create(DetallesRepository.class);
-	}
 }

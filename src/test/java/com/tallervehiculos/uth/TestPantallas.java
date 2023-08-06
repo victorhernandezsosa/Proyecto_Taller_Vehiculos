@@ -18,14 +18,12 @@ import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparaciónView;
 import com.tallervehiculos.uth.views.registrodevehículo.RegistrodeVehículoView;
 import com.tallervehiculos.uth.views.repuestos.RepuestosView;
 import com.tallervehiculos.uth.views.servicios.ServiciosView;
-import com.tallervehiculos.uth.views.detallesdeorden.DetallesdeOrdenView;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.Query;
 
 class TestPantallas {
 
 	private OrdendeReparaciónView vista;
-	private DetallesdeOrdenView mos;
 	private RegistrodeVehículoView carview;
 	private RepuestosView repview;
 	private ServiciosView serView;
@@ -33,7 +31,6 @@ class TestPantallas {
 	public void setUp() throws Exception {
 
 		vista = new OrdendeReparaciónView();
-		mos = new DetallesdeOrdenView();
 		carview = new RegistrodeVehículoView();
 		repview = new RepuestosView();
 		serView = new ServiciosView();
@@ -59,15 +56,6 @@ class TestPantallas {
 	    grid.setItems(items);
 	    
 	    Assertions.assertEquals(items, vista.getGrid().getDataProvider().fetch(new Query<>()).collect(Collectors.toList()));
-	}
-	
-	@Test
-	public void DetallesTest(){
-		System.out.println("Se está ejecutando la prueba de Detalles");
-		
-		Grid<Detalles> grid = mos.getObtenerGrid();
-		assertNotNull(grid);
-		
 	}
 	
 	@Test

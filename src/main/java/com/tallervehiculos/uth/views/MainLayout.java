@@ -1,6 +1,5 @@
 package com.tallervehiculos.uth.views;
 
-import com.tallervehiculos.uth.views.detallesdeorden.DetallesdeOrdenView;
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparaciónView;
 import com.tallervehiculos.uth.views.ordensr.OrdenSRView;
 import com.tallervehiculos.uth.views.registrodevehículo.RegistrodeVehículoView;
@@ -62,7 +61,6 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Orden S/R", OrdenSRView.class, LineAwesomeIcon.FILE_INVOICE_SOLID.create()));
         nav.addItem(new SideNavItem("Servicios", ServiciosView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));
         nav.addItem(new SideNavItem("Repuestos", RepuestosView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));
-        nav.addItem(new SideNavItem("Detalles de Orden", DetallesdeOrdenView.class, LineAwesomeIcon.LIST_ALT.create()));
 
         return nav;
     }
