@@ -7,8 +7,8 @@ public class OrdenSR extends AbstractEntity {
 
     private Integer id_ordensr;
     private String orden_id;
-    private Integer servicio_id;
-    private Integer repuesto_id;
+    private String servicio_id;
+    private String repuesto_id;
 
 	public Integer getId_ordensr() {
 		return id_ordensr;
@@ -22,16 +22,16 @@ public class OrdenSR extends AbstractEntity {
 	public void setOrden_id(String orden_id) {
 		this.orden_id = orden_id;
 	}
-	public Integer getServicio_id() {
+	public String getServicio_id() {
 		return servicio_id;
 	}
-	public void setServicio_id(Integer servicio_id) {
+	public void setServicio_id(String servicio_id) {
 		this.servicio_id = servicio_id;
 	}
-	public Integer getRepuesto_id() {
+	public String getRepuesto_id() {
 		return repuesto_id;
 	}
-	public void setRepuesto_id(Integer repuesto_id) {
+	public void setRepuesto_id(String repuesto_id) {
 		this.repuesto_id = repuesto_id;
 	}
 

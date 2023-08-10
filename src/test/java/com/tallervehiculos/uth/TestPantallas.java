@@ -62,7 +62,7 @@ class TestPantallas {
 		System.out.println("Se está ejecutando la prueba de Registro de Vehiculos");
 		List<Vehiculo> car = new ArrayList<>();
 		Vehiculo car1 = new Vehiculo();
-		car1.setId_vehiculo("1");
+		car1.setId_vehiculo(1);
 		car.add(car1);
 
 		Grid<Vehiculo> grid = carview.getGrid();

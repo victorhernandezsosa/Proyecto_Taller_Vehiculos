@@ -3,6 +3,8 @@ package com.tallervehiculos.uth.data.service;
 import java.io.IOException;
 
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
+import com.tallervehiculos.uth.data.entity.ResponseOrdenSR;
+import com.tallervehiculos.uth.data.entity.ResponseRepuestos;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
 
@@ -53,6 +55,26 @@ public class TallerRepositoryImp {
 	public ResponseServicios getServicios() throws IOException {
 		Call<ResponseServicios> call = taller.getDatabaseService().obtenerServicios();
 		Response<ResponseServicios> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
+		if(response.isSuccessful()){
+			return response.body();
+		}else {
+			return null;
+		}
+	}
+	
+	public ResponseOrdenSR getOrdenSR() throws IOException {
+		Call<ResponseOrdenSR> call = taller.getDatabaseService().obtenerOrdenSR();
+		Response<ResponseOrdenSR> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
+		if(response.isSuccessful()){
+			return response.body();
+		}else {
+			return null;
+		}
+	}
+	
+	public  ResponseRepuestos getRepuesto() throws IOException {
+		Call<ResponseRepuestos> call = taller.getDatabaseService().obtenerRepuesto();
+		Response<ResponseRepuestos> response = call.execute(); //AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
 		if(response.isSuccessful()){
 			return response.body();
 		}else {

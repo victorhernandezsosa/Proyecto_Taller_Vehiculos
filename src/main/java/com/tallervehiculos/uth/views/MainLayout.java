@@ -59,9 +59,9 @@ public class MainLayout extends AppLayout {
                 LineAwesomeIcon.CAR_SOLID.create()));
         nav.addItem(new SideNavItem("Orden de Reparación", OrdendeReparaciónView.class,
                 LineAwesomeIcon.FILE_INVOICE_SOLID.create()));
-        nav.addItem(new SideNavItem("Orden S/R", OrdenSRView.class, LineAwesomeIcon.FILE_INVOICE_SOLID.create()));
         nav.addItem(new SideNavItem("Servicios", ServiciosView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));
         nav.addItem(new SideNavItem("Repuestos", RepuestosView.class, LineAwesomeIcon.LIST_OL_SOLID.create()));
+        nav.addItem(new SideNavItem("Orden S/R", OrdenSRView.class, LineAwesomeIcon.FILE_INVOICE_SOLID.create()));
 
         return nav;
     }

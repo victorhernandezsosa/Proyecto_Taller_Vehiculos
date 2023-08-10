@@ -27,6 +27,5 @@ public class OrdenVehiculos_InteractorImp implements OrdenVehiculos_Interactor {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

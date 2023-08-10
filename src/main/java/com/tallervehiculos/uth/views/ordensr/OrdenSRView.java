@@ -1,20 +1,29 @@
 package com.tallervehiculos.uth.views.ordensr;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactor;
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactorImp;
-import com.tallervehiculos.uth.data.entity.Vehiculo;
+import com.tallervehiculos.uth.data.entity.OrdenSR;
+import com.tallervehiculos.uth.data.entity.Orden_reparacion;
+import com.tallervehiculos.uth.data.entity.Servicios;
+import com.tallervehiculos.uth.data.entity.repuestos;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.flow.theme.lumo.LumoUtility.AlignItems;
 import com.vaadin.flow.theme.lumo.LumoUtility.Display;
 import com.vaadin.flow.theme.lumo.LumoUtility.Flex;
@@ -31,145 +40,150 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 
 @PageTitle("Orden S/R")
 @Route(value = "orden_SR", layout = MainLayout.class)
-public class OrdenSRView extends Div implements OrdenSRViewModel{
+public class OrdenSRView extends Div implements OrdenSRViewModel {
 
-	Select<String> orden_id;
-	private Vehiculo veh;
-	//private RegistrodeVehículoView vehiculo;
-	private List<Vehiculo> vehiculo;
+	private Grid<OrdenSR> grid;
+	private ComboBox<Orden_reparacion> orden_id;
+	private ComboBox<Servicios> servicio_id;
+	private ComboBox<repuestos> repuesto_id;
+	private List<Orden_reparacion> orden_reparacion;
+	private List<Servicios> servicios;
+	private List<repuestos> repuesto;
+
 	private OrdenSR_interactor controlador;
 
+	public OrdenSRView() {
+		this.controlador = new OrdenSR_interactorImp(this);
+		// this.controlador.consultarOrdenSR();
+		this.controlador.consultarOrden();
+		this.controlador.consultarRepuesto();
+		this.controlador.consultarServicios();
 
-    public OrdenSRView() {
-    	vehiculo = new ArrayList<>();
-    	this.controlador = new OrdenSR_interactorImp(this);
-   //inicio_combobox(veh);
-        addClassNames("orden-sr-view");
-        addClassNames(Display.FLEX, FlexDirection.COLUMN, Height.FULL);
+		addClassNames("orden-sr-view");
+		addClassNames(Display.FLEX, FlexDirection.COLUMN, Height.FULL);
 
-        Main content = new Main();
-        content.addClassNames(Gap.XLARGE, AlignItems.START, JustifyContent.CENTER, MaxWidth.SCREEN_MEDIUM,
-                Margin.Horizontal.AUTO, Padding.Bottom.LARGE, Padding.Horizontal.LARGE);
+		Main content = new Main();
+		content.addClassNames(Gap.XLARGE, AlignItems.START, JustifyContent.CENTER, MaxWidth.SCREEN_MEDIUM,
+				Margin.Horizontal.AUTO, Padding.Bottom.LARGE, Padding.Horizontal.LARGE);
 
+		content.add(createCheckoutForm());
 
+		VerticalLayout layout = new VerticalLayout(content, createGrid());
+		this.controlador.consultarOrdenSR();
+		layout.setSizeFull();
+		layout.setPadding(false);
+		layout.setSpacing(false);
 
-        content.add(createCheckoutForm());
-        add(content);
-    }
+		add(layout);
+	}
 
-    private Component createCheckoutForm() {
-        Section checkoutForm = new Section();
-        checkoutForm.addClassNames(Display.FLEX, FlexDirection.COLUMN, Flex.GROW);
+	private Component createCheckoutForm() {
+		Section checkoutForm = new Section();
+		checkoutForm.addClassNames(Display.FLEX, FlexDirection.COLUMN, Flex.GROW);
 
-        H2 header = new H2("Registro de Orden");
-        header.addClassNames(Margin.Bottom.NONE, Margin.Top.XLARGE, FontSize.XXXLARGE);
-        Paragraph note = new Paragraph("Registre la orden de los servicios y repuestos que se le daran a un vehiculo.");
-        note.addClassNames(Margin.Bottom.XLARGE, Margin.Top.NONE, TextColor.SECONDARY);
-        checkoutForm.add(header, note);
+		H2 header = new H2("Registro de Orden");
+		header.addClassName("orden-sr-view-h2-1");
+		header.addClassNames(Margin.Bottom.NONE, Margin.Top.XLARGE, FontSize.XXXLARGE);
+		Paragraph note = new Paragraph("Registre la orden de los servicios y repuestos que se le daran a un vehiculo.");
+		note.addClassNames(Margin.Bottom.XLARGE, Margin.Top.NONE, TextColor.SECONDARY);
+		checkoutForm.add(header, note);
 
-        checkoutForm.add(createPaymentInformationSection());
-        checkoutForm.add(new Hr());
-        checkoutForm.add(createFooter());
+		checkoutForm.add(createPaymentInformationSection());
+		checkoutForm.add(new Hr());
+		checkoutForm.add(createFooter());
 
-        return checkoutForm;
-    }
+		return checkoutForm;
+	}
 
-    private Component createPaymentInformationSection() {
-        Section paymentInfo = new Section();
-        paymentInfo.addClassNames(Display.FLEX, FlexWrap.WRAP, Gap.MEDIUM, Margin.Top.MEDIUM);
+	private Component createPaymentInformationSection() {
+		Section paymentInfo = new Section();
+		paymentInfo.addClassNames(Display.FLEX, FlexWrap.WRAP, Gap.MEDIUM, Margin.Top.MEDIUM);
 
-        TextField id_ordenSR = new TextField("ID");
-        id_ordenSR.setRequiredIndicatorVisible(true);
-        id_ordenSR.setPattern("[\\p{L} \\-]+");
-        id_ordenSR.addClassNames(Margin.Bottom.MEDIUM);
+		/*
+		 * ComboBox id_ordenSR = new ComboBox<>("ID");
+		 * id_ordenSR.setRequiredIndicatorVisible(true);
+		 * id_ordenSR.setPattern("[\\p{L} \\-]+");
+		 * id_ordenSR.addClassNames(Margin.Bottom.MEDIUM);
+		 */
 
-        orden_id = new Select<>();
-        //orden_id = new Select<>();
-        orden_id.setLabel("Orden ID");
-        orden_id.setRequiredIndicatorVisible(true);
-        //orden_id.setItems(veh.getId_vehiculo());
-        this.controlador.consultarOrdenSR();
+		orden_id = new ComboBox<>("Orden");
+		orden_id.setRequiredIndicatorVisible(true);
+		orden_id.setItems(orden_reparacion);
+		orden_id.setItemLabelGenerator(Orden_reparacion::getDescripcion_problema);
 
-        for(Vehiculo vehiculo : vehiculo) {
-			this.orden_id.setItems(String.valueOf(vehiculo.getId_vehiculo()));
-		}
+		Div subSectionTwo = new Div();
+		subSectionTwo.addClassNames(Display.FLEX, FlexWrap.WRAP, Gap.MEDIUM);
 
-        Div subSectionTwo = new Div();
-        subSectionTwo.addClassNames(Display.FLEX, FlexWrap.WRAP, Gap.MEDIUM);
+		servicio_id = new ComboBox<>("Servicio");
+		servicio_id.setRequiredIndicatorVisible(true);
+		servicio_id.setItems(servicios);
+		servicio_id.setItemLabelGenerator(Servicios::getNombre_servicio);
 
-        Select<String> servicio_id = new Select<>();
-        servicio_id.setLabel("Servicio ID");
-        servicio_id.setRequiredIndicatorVisible(true);
-        servicio_id.setItems("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+		repuesto_id = new ComboBox<>("Repuesto");
+		repuesto_id.setRequiredIndicatorVisible(true);
+		repuesto_id.setItems(repuesto);
+		repuesto_id.setItemLabelGenerator(repuestos::getNombre_repuesto);
 
-        /*Select<String> repuesto_id = new Select<>();
-        repuesto_id.setLabel("Repuesto ID");
-        repuesto_id.setRequiredIndicatorVisible(true);
-        repuesto_id.setItems("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-        */
+		subSectionTwo.add(servicio_id, repuesto_id);
 
-        createRepuestoIdSelect(vehiculo);
+		paymentInfo.add(orden_id, subSectionTwo);
+		return paymentInfo;
+	}
 
-        subSectionTwo.add(servicio_id);
+	private Component createGrid() {
+		
+		H4 header = new H4("Detalles de Orden S/R");
+		header.addClassName("orden-sr-view-h4-1");
+		header.addClassNames(Margin.Bottom.NONE, Margin.Top.XLARGE, FontSize.XXXLARGE, AlignItems.CENTER);
 
-        paymentInfo.add(id_ordenSR ,orden_id , subSectionTwo);
-        return paymentInfo;
-    }
+		grid = new Grid<>(OrdenSR.class, false);
+		grid.addColumn(OrdenSR::getId_ordensr).setHeader("ID").setAutoWidth(true);
+		grid.addColumn(OrdenSR::getOrden_id).setHeader("Problema Vehiculo").setAutoWidth(true);
+		grid.addColumn(OrdenSR::getRepuesto_id).setHeader("Repuesto").setAutoWidth(true);
+		grid.addColumn(OrdenSR::getServicio_id).setHeader("Servicio").setAutoWidth(true);
+		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+		grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10, AlignItems.CENTER, JustifyContent.CENTER);
+		
+		VerticalLayout nose = new VerticalLayout(header, grid);
+		nose.setAlignItems(FlexComponent.Alignment.STRETCH);
+		
+		return nose;
+	}
 
-    private Footer createFooter() {
-        Footer footer = new Footer();
-        footer.addClassNames(Display.FLEX, AlignItems.CENTER, JustifyContent.BETWEEN, Margin.Vertical.MEDIUM);
+	private Footer createFooter() {
+		Footer footer = new Footer();
+		footer.addClassNames(Display.FLEX, AlignItems.CENTER, JustifyContent.BETWEEN, Margin.Vertical.MEDIUM);
 
-        Button cancel = new Button("Cancelar Orden");
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+		Button cancel = new Button("Cancelar Orden");
+		cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        Button pay = new Button("Registrar Orden");
-        pay.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
+		Button pay = new Button("Guardar Orden");
+		pay.addThemeVariants(ButtonVariant.LUMO_PRIMARY/* , ButtonVariant.LUMO_SUCCESS */);
 
-        footer.add(cancel, pay);
-        return footer;
-    }
+		footer.add(cancel, pay);
+		return footer;
+	}
 
+	@Override
+	public void refrescarComboBoxOrden(List<Orden_reparacion> orden) {
+		this.orden_reparacion = orden;
+	}
 
+	@Override
+	public void refrescarComboBoxServicios(List<Servicios> items_servicios) {
+		this.servicios = items_servicios;
+	}
 
-    public Select<String> createRepuestoIdSelect(List<Vehiculo> vehiculos) {
-        List<String> nombresClientes = new ArrayList<>();
+	@Override
+	public void refrescarComboBoxRepuestos(List<repuestos> items) {
+		this.repuesto = items;
+	}
 
-        for (Vehiculo vehiculo : vehiculos) {
-            nombresClientes.add(vehiculo.getNombre_cliente());
-        }
+	@Override
+	public void refrescarGridOrdenSR(List<OrdenSR> itemsSR) {
+		Collection<OrdenSR> items = itemsSR;
+		grid.setItems(items);
 
-        Select<String> repuesto_id = new Select<>();
-        repuesto_id.setLabel("Repuesto ID");
-        repuesto_id.setRequiredIndicatorVisible(true);
-        repuesto_id.setItems(nombresClientes);
-
-        return repuesto_id;
-    }
-
-
-    /*@Override
-	public void refrescarSelectRepuesto(List<Vehiculo> vehiculos) {
-		for(Vehiculo vehiculo : vehiculos) {
-			this.orden_id.setItems(String.valueOf(vehiculos));
-		}
-	}*/
-
-    /*public void inicio_combobox(List<Vehiculo> prueba) {
-    	for(Vehiculo vehiculo : prueba) {
-    		orden_id.setItems(vehiculo.getId_vehiculo());
-		}
-    }*/
-
-    /*public void refrescarComboBoxOrden(List<Vehiculo> items_orden) {
-        if (items_orden != null && !items_orden.isEmpty()) {
-            ComboBox<Vehiculo> comboBoxModel = new ComboBox<>();
-            for (Vehiculo orden : items_orden) {
-            	comboBoxModel.addElement(orden);
-            }
-            comboBox.setModel(comboBoxModel);
-            this.orden = new ArrayList<>(items_orden);
-        }
-    }*/
+	}
 
 }

@@ -252,7 +252,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
             this.modelo.setValue("");
             this.placa.setValue("");
         } else {
-        	this.id_vehiculo.setValue(value.getId_vehiculo());
+        	this.id_vehiculo.setValue(String.valueOf(value.getId_vehiculo()));
             this.nombre_cliente.setValue(value.getNombre_cliente());
             this.marca.setValue(value.getMarca());
             this.modelo.setValue(value.getModelo());

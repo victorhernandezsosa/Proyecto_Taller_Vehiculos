@@ -5,19 +5,19 @@ import jakarta.persistence.Entity;
 @Entity
 public class Vehiculo extends AbstractEntity {
 
-    private String id_vehiculo;
+    private Integer id_vehiculo;
     private String nombre_cliente;
     private String marca;
     private String modelo;
     private String placa;
 
-    public String getId_vehiculo() {
-        return id_vehiculo;
-    }
-    public void setId_vehiculo(String id_vehiculo) {
-        this.id_vehiculo = id_vehiculo;
-    }
-    public String getNombre_cliente() {
+    public Integer getId_vehiculo() {
+		return id_vehiculo;
+	}
+	public void setId_vehiculo(Integer id_vehiculo) {
+		this.id_vehiculo = id_vehiculo;
+	}
+	public String getNombre_cliente() {
         return nombre_cliente;
     }
     public void setNombre_cliente(String nombre_cliente) {

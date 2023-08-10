@@ -17,11 +17,13 @@ import com.tallervehiculos.uth.data.entity.OrdenReparacionReport;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.data.entity.Servicios;
 import com.tallervehiculos.uth.data.entity.ServiciosReport;
+import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -46,14 +48,14 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
     private final String ORDEN_REPARACION_ID = "orden_reparacionID";
     private final String ORDEN_REPARACION_EDIT_ROUTE_TEMPLATE = "orden-reparacion/%s/edit";
-
     private final Grid<Orden_reparacion> grid = new Grid<>(Orden_reparacion.class, false);
 
     private TextField id_orden;
-    private TextField vehiculo_id;
+    private ComboBox<Vehiculo> vehiculo_id;
     private TextField descripcion_problema;
     private TextField estado_reparacion;
     private List<Orden_reparacion> orden;
+    private List<Vehiculo> vehiculo;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
@@ -108,6 +110,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
       //Mndo a traer las ordenes del repositorio
         this.controlador.consultarOrden();
+        this.controlador.consultarVehiculo();
 
 
         // Configure Form
@@ -202,7 +205,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
         FormLayout formLayout = new FormLayout();
         id_orden = new TextField("ID");
-        vehiculo_id = new TextField("Vehiculo ID");
+        vehiculo_id = new ComboBox<>("Vehiculo ID");
         descripcion_problema = new TextField("Problema");
         estado_reparacion = new TextField("Estado");
         formLayout.add(id_orden, vehiculo_id, descripcion_problema, estado_reparacion);
@@ -243,18 +246,29 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
         if(value == null){
         	this.id_orden.setValue("");
-            this.vehiculo_id.setValue("");
+            this.vehiculo_id.setValue(null);
             this.descripcion_problema.setValue("");
             this.estado_reparacion.setValue("");
         } else {
         	this.id_orden.setValue(value.getId_orden());
-            this.vehiculo_id.setValue(value.getVehiculo_id());
+            this.vehiculo_id.setValue(buscarVehiculoSeleccionado(value.getVehiculo_id()));
             this.descripcion_problema.setValue(value.getDescripcion_problema());
             this.estado_reparacion.setValue(value.getEstado_reparacion());
 
         }
     }
 
+    private Vehiculo buscarVehiculoSeleccionado(Integer id_vehiculo) {
+    	Vehiculo seleccionado = new Vehiculo();
+    	for(Vehiculo v : vehiculo) {
+    		if(v.getId_vehiculo() == id_vehiculo) {
+    			seleccionado = v;
+    			break;
+    		}
+    	}
+    	return seleccionado;
+    }
+    
     @Override
 	public void refrescarGridOrden(List<Orden_reparacion> items_orden) {
     	if(items_orden != null && !items_orden.isEmpty()) {
@@ -265,9 +279,15 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
 	}
 
-
+    @Override
+    public void refrescarComboBoxVehiculos(List<Vehiculo> items) {
+    	vehiculo_id.setItems(items);
+    	vehiculo_id.setItemLabelGenerator(Vehiculo::getPlaca);
+    	this.vehiculo = items;
+    }
 
     public Grid<Orden_reparacion> getGrid(){
     	return grid;
     }
+
 }
