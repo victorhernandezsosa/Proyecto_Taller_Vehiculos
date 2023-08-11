@@ -1,5 +1,6 @@
 package com.tallervehiculos.uth.views;
-
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparaciónView;
@@ -7,12 +8,18 @@ import com.tallervehiculos.uth.views.ordensr.OrdenSRView;
 import com.tallervehiculos.uth.views.registrodevehículo.RegistrodeVehículoView;
 import com.tallervehiculos.uth.views.repuestos.RepuestosView;
 import com.tallervehiculos.uth.views.servicios.ServiciosView;
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -43,14 +50,28 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("Taller_Vehiculos");
-        appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        Header header = new Header(appName);
+    	 H1 appName = new H1();
+    	    Icon vaadinIcon = VaadinIcon.TOOLS.create();
+    	    vaadinIcon.setSize("24px");
 
-        Scroller scroller = new Scroller(createNavigation());
+    	    Span appNameText = new Span("   Los PITS Corp  ");
+    	    Span appNameSubtext = new Span("   Página Oficial  ");
 
-        addToDrawer(header, scroller, createFooter());
-    }
+    	    VerticalLayout textLayout = new VerticalLayout(appNameText, appNameSubtext);
+    	    textLayout.getStyle().set("text-align", "center");
+
+    	    HorizontalLayout appNameLayout = new HorizontalLayout(textLayout, vaadinIcon);
+    	    appNameLayout.setVerticalComponentAlignment(FlexComponent.Alignment.CENTER, textLayout, vaadinIcon);
+
+    	    appName.add(appNameLayout);
+    	    appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+
+    	    Header header = new Header(appName);
+
+    	    Scroller scroller = new Scroller(createNavigation());
+
+    	    addToDrawer(header, scroller, createFooter());
+    	}
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();

@@ -28,6 +28,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -79,15 +80,17 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn(Vehiculo::getId_vehiculo).setHeader("ID").setAutoWidth(true);
-        grid.addColumn(Vehiculo::getNombre_cliente).setHeader("Cliente").setAutoWidth(true);
-        grid.addColumn(Vehiculo::getMarca).setHeader("Marca").setAutoWidth(true);
-        grid.addColumn(Vehiculo::getModelo).setHeader("Modelo").setAutoWidth(true);
-        grid.addColumn(Vehiculo::getPlaca).setHeader("Placa").setAutoWidth(true);
+        grid.addColumn(Vehiculo::getId_vehiculo).setHeader("ID de vehículo").setAutoWidth(true);
+        grid.addColumn(Vehiculo::getNombre_cliente).setHeader("Nombre del Cliente").setAutoWidth(true);
+        grid.addColumn(Vehiculo::getMarca).setHeader("Marca del Vehículo").setAutoWidth(true);
+        grid.addColumn(Vehiculo::getModelo).setHeader("Modelo del Vehículo").setAutoWidth(true);
+        grid.addColumn(Vehiculo::getPlaca).setHeader("Placa/Matricula").setAutoWidth(true);
         /*grid.setItems(query -> vehiculoService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());*/
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        
+        
         
         GridContextMenu<Vehiculo> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {
@@ -140,6 +143,8 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     private void generarReporteRegistro() {
     	ReportGenerator generador = new ReportGenerator();
         Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_DIR","logo.png");
+        parametros.put("LOGO_BAR","barcode.png");
         RegistroVehiculoReport datasource = new RegistroVehiculoReport();
         datasource.setData(vehiculos);
         String rutaPDF = generador.generarReportePDF("reporte_registro", parametros, datasource);
@@ -205,14 +210,22 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        id_vehiculo = new TextField("ID");
-        nombre_cliente = new TextField("Cliente");
-        marca = new TextField("Marca");
-        modelo = new TextField("Modelo");
-        placa = new TextField("Placa");
+        id_vehiculo = new TextField("ID de vehículo");
+        nombre_cliente = new TextField("Nombre del Cliente");
+        marca = new TextField("Marca del Vehículo");
+        modelo = new TextField("Modelo del Vehículo");
+        placa = new TextField("Placa/Matricula");
         formLayout.add(id_vehiculo, nombre_cliente, marca, modelo, placa);
-
+        
+        id_vehiculo.setPrefixComponent(VaadinIcon.EDIT.create());
+        nombre_cliente.setPrefixComponent(VaadinIcon.USER.create());
+        marca.setPrefixComponent(VaadinIcon.INFO_CIRCLE_O.create());
+        modelo.setPrefixComponent(VaadinIcon.INFO_CIRCLE_O.create());
+        placa.setPrefixComponent(VaadinIcon.PASSWORD.create());
         editorDiv.add(formLayout);
+        
+ 
+        
         createButtonLayout(editorLayoutDiv);
 
         splitLayout.addToSecondary(editorLayoutDiv);

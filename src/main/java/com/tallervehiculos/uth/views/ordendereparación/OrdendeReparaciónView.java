@@ -28,6 +28,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -76,14 +77,11 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn(Orden_reparacion::getId_orden).setHeader("ID").setAutoWidth(true);
-        grid.addColumn(Orden_reparacion::getVehiculo_id).setHeader("Vehiculo ID").setAutoWidth(true);
-        //grid.addColumn(Orden_reparacion::getNombre).setHeader("Nombre").setAutoWidth(true);
-        grid.addColumn(Orden_reparacion::getDescripcion_problema).setHeader("Problema").setAutoWidth(true);
-        grid.addColumn(Orden_reparacion::getEstado_reparacion).setHeader("Estado").setAutoWidth(true);
-        /*grid.setItems(query -> Orden_reparacion(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());*/
+        grid.addColumn(Orden_reparacion::getId_orden).setHeader("ID de Orden").setAutoWidth(true);
+        grid.addColumn(Orden_reparacion::getVehiculo_id).setHeader("ID de Vehículo").setAutoWidth(true);
+        grid.addColumn(Orden_reparacion::getDescripcion_problema).setHeader("Descripción de Problema").setAutoWidth(true);
+        grid.addColumn(Orden_reparacion::getEstado_reparacion).setHeader("Estado Actual de Atención").setAutoWidth(true);
+       
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         
         GridContextMenu<Orden_reparacion> menu = grid.addContextMenu();
@@ -138,6 +136,8 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     private void generarReporteReparacion() {
     	ReportGenerator generador = new ReportGenerator();
         Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_DIR","logo.png");
+        parametros.put("LOGO_BAR","barcode.png");
         OrdenReparacionReport datasource = new OrdenReparacionReport();
         datasource.setData(orden);
         String rutaPDF = generador.generarReportePDF("reporte_Orden", parametros, datasource);
@@ -201,12 +201,17 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        id_orden = new TextField("ID");
-        vehiculo_id = new TextField("Vehiculo ID");
-        descripcion_problema = new TextField("Problema");
-        estado_reparacion = new TextField("Estado");
+        id_orden = new TextField("ID de Orden");
+        vehiculo_id = new TextField("ID de Vehículo");
+        descripcion_problema = new TextField("Descripción de Problema");
+        estado_reparacion = new TextField("Estado Actual de Atención");
         formLayout.add(id_orden, vehiculo_id, descripcion_problema, estado_reparacion);
-
+       
+        id_orden.setPrefixComponent(VaadinIcon.EDIT.create());
+        vehiculo_id.setPrefixComponent(VaadinIcon.CAR.create());
+        descripcion_problema.setPrefixComponent(VaadinIcon.WARNING.create());
+        estado_reparacion.setPrefixComponent(VaadinIcon.TOOLBOX.create());
+        
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
 
@@ -253,6 +258,8 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
             this.estado_reparacion.setValue(value.getEstado_reparacion());
 
         }
+        
+        
     }
 
     @Override
