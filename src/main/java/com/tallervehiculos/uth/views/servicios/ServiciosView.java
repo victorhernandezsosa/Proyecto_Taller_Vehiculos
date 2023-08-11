@@ -29,6 +29,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -80,10 +81,10 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         add(splitLayout);
 
 
-        grid.addColumn(Servicios::getId_servicio).setHeader("ID");
+        grid.addColumn(Servicios::getId_servicio).setHeader("ID de Servicio");
     	grid.addColumn(Servicios::getNombre_servicio).setHeader("Servicio");
     	grid.addColumn(Servicios::getSubservicio).setHeader("Subservicio");
-    	grid.addColumn(Servicios::getCosto).setHeader("Costo");
+    	grid.addColumn(Servicios::getCosto).setHeader("Costo de Servicio");
     	grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
     	GridContextMenu<Servicios> menu = grid.addContextMenu();
@@ -137,6 +138,8 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     private void generarReporteServicios() {
         ReportGenerator generador = new ReportGenerator();
         Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_DIR","logo.png");
+        parametros.put("LOGO_BAR","barcode.png");
         ServiciosReport datasource = new ServiciosReport();
         datasource.setData(servicio);
         String rutaPDF = generador.generarReportePDF("reporte_servicio", parametros, datasource);
@@ -222,11 +225,17 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         editorLayoutDiv.add(editorContentLayout);
 
         FormLayout formLayout = new FormLayout();
-        id_servicio = new TextField("ID");
+        id_servicio = new TextField("ID de Servicio");
         Nombre_servicio = new TextField("Servicio");
         Subservicio = new TextField("Subservicio");
-        Costo = new TextField("Costo");
+        Costo = new TextField("Costo de Servicio");
         formLayout.add(id_servicio, Nombre_servicio, Subservicio, Costo);
+        
+        id_servicio.setPrefixComponent(VaadinIcon.EDIT.create());
+        Nombre_servicio.setPrefixComponent(VaadinIcon.COG.create());
+        Subservicio.setPrefixComponent(VaadinIcon.COGS.create());
+        Costo.setPrefixComponent(VaadinIcon.MONEY.create());
+        
         editorContentLayout.add(formLayout);
 
         createButtonLayout(editorContentLayout);

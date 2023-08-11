@@ -29,6 +29,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -73,7 +74,7 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
         createEditorLayout(splitLayout);
         add(splitLayout);
 
-        grid.addColumn(repuestos::getId_repuesto).setHeader("ID");
+        grid.addColumn(repuestos::getId_repuesto).setHeader("ID de Repuesto");
     	grid.addColumn(repuestos::getNombre_repuesto).setHeader("Repuesto");
     	grid.addColumn(repuestos::getPrecio).setHeader("Precio");
     	grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -128,6 +129,8 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
     private void generarReporteRepuestos() {
     	ReportGenerator generador = new ReportGenerator();
         Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_DIR","logo.png");
+        parametros.put("LOGO_BAR","barcode.png");
         RepuestosReport datasource = new RepuestosReport();
         datasource.setData(repuesto);
         String rutaPDF = generador.generarReportePDF("reporte_repuestos", parametros, datasource);
@@ -210,10 +213,17 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
         editorLayoutDiv.add(editorContentLayout);
 
         FormLayout formLayout = new FormLayout();
-        idRepuesto = new TextField("ID");
+        idRepuesto = new TextField("ID de Repuesto");
         nombreRepuesto = new TextField("Repuesto");
         precioRepuesto = new TextField("Precio");
         formLayout.add(idRepuesto, nombreRepuesto, precioRepuesto);
+        
+        idRepuesto.setPrefixComponent(VaadinIcon.EDIT.create());
+        nombreRepuesto.setPrefixComponent(VaadinIcon.STOCK.create());
+        precioRepuesto.setPrefixComponent(VaadinIcon.MONEY.create());
+  
+        
+        
         editorContentLayout.add(formLayout);
 
         createButtonLayout(editorContentLayout);
