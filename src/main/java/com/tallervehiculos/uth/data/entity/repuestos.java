@@ -1,9 +1,9 @@
 package com.tallervehiculos.uth.data.entity;
 
-import jakarta.persistence.Entity;
+//import jakarta.persistence.Entity;
 
-@Entity
-public class repuestos extends AbstractEntity {
+//@Entity
+public class repuestos /*extends AbstractEntity*/ {
 
     private String id_repuesto;
     private String nombre_repuesto;

@@ -1,9 +1,7 @@
 package com.tallervehiculos.uth.views.ordensr;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactor;
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactorImp;
 import com.tallervehiculos.uth.data.entity.OrdenSR;
@@ -18,9 +16,11 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
@@ -141,6 +141,15 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		grid.addColumn(OrdenSR::getOrden_id).setHeader("Problema Vehiculo").setAutoWidth(true);
 		grid.addColumn(OrdenSR::getRepuesto_id).setHeader("Repuesto").setAutoWidth(true);
 		grid.addColumn(OrdenSR::getServicio_id).setHeader("Servicio").setAutoWidth(true);
+		grid.addColumn(
+                new ComponentRenderer<>(Button::new, (button, person) -> {
+                    button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                            ButtonVariant.LUMO_ERROR,
+                            ButtonVariant.LUMO_TERTIARY);
+                    //button.addClickListener(e -> this.removeInvitation(person));
+                    button.setIcon(new Icon(VaadinIcon.TRASH));
+                })).setHeader("Manage");
+		
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10, AlignItems.CENTER, JustifyContent.CENTER);
 		

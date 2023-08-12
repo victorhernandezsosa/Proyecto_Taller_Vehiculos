@@ -7,4 +7,5 @@ import com.tallervehiculos.uth.data.entity.Vehiculo;
 
 public interface registrodevehiculoViewModel {
 	void refrescarGridVehiculos(List<Vehiculo> vehiculos);
+	void mostrarMensajeCreacion(boolean respuesta);
 }

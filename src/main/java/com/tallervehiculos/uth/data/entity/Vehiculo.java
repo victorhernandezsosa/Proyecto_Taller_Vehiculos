@@ -1,9 +1,9 @@
 package com.tallervehiculos.uth.data.entity;
 
-import jakarta.persistence.Entity;
+//import jakarta.persistence.Entity;
 
-@Entity
-public class Vehiculo extends AbstractEntity {
+//@Entity
+public class Vehiculo/* extends AbstractEntity */{
 
     private Integer id_vehiculo;
     private String nombre_cliente;
@@ -11,7 +11,7 @@ public class Vehiculo extends AbstractEntity {
     private String modelo;
     private String placa;
 
-    public Integer getId_vehiculo() {
+	public Integer getId_vehiculo() {
 		return id_vehiculo;
 	}
 	public void setId_vehiculo(Integer id_vehiculo) {
@@ -41,5 +41,4 @@ public class Vehiculo extends AbstractEntity {
     public void setPlaca(String placa) {
         this.placa = placa;
     }
-
 }

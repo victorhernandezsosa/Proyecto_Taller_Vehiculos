@@ -15,8 +15,6 @@ import com.tallervehiculos.uth.data.controller.OrdenReparacion_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_InteractorImp;
 import com.tallervehiculos.uth.data.entity.OrdenReparacionReport;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
-import com.tallervehiculos.uth.data.entity.Servicios;
-import com.tallervehiculos.uth.data.entity.ServiciosReport;
 import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
@@ -209,7 +207,6 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         descripcion_problema = new TextField("Problema");
         estado_reparacion = new TextField("Estado");
         id_orden = new TextField("ID de Orden");
-        vehiculo_id = new TextField("ID de Vehículo");
         descripcion_problema = new TextField("Descripción de Problema");
         estado_reparacion = new TextField("Estado Actual de Atención");
         formLayout.add(id_orden, vehiculo_id, descripcion_problema, estado_reparacion);

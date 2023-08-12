@@ -1,4 +1,4 @@
-insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 1,'Eula','Lane','eula.lane@jigrormo.ye','(762) 526-5961','1953-12-02','Insurance Clerk','Worker',false)
+/*insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 1,'Eula','Lane','eula.lane@jigrormo.ye','(762) 526-5961','1953-12-02','Insurance Clerk','Worker',false)
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 2,'Barry','Rodriquez','barry.rodriquez@zun.mm','(267) 955-5124','2012-12-02','Mortarman','Manager',false)
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 3,'Eugenia','Selvi','eugenia.selvi@capfad.vn','(680) 368-2192','1972-11-17','Beer Coil Cleaner','External',false)
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 4,'Alejandro','Miles','alejandro.miles@dec.bn','(281) 301-2039','2013-01-04','Scale Attendant','Worker',false)
@@ -198,5 +198,5 @@ insert into vehiculo(version, id,id_vehiculo,nombre_cliente,marca,modelo,placa) 
 insert into vehiculo(version, id,id_vehiculo,nombre_cliente,marca,modelo,placa) values (1, 98,'4','Earl','lojet','ukve viipo','34376')
 insert into vehiculo(version, id,id_vehiculo,nombre_cliente,marca,modelo,placa) values (1, 99,'6','Helen','ukve','viipo apuwibem','51940')
 insert into vehiculo(version, id,id_vehiculo,nombre_cliente,marca,modelo,placa) values (1, 100,'6','Agnes','viipo','apuwibem nine','52658')
-
+*/
 

@@ -8,14 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_InteractorImp;
 import com.tallervehiculos.uth.data.entity.RegistroVehiculoReport;
-import com.tallervehiculos.uth.data.entity.Servicios;
-import com.tallervehiculos.uth.data.entity.ServiciosReport;
 import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
@@ -58,6 +54,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     private TextField modelo;
     private TextField placa;
     private List<Vehiculo> vehiculos;
+    private Integer id;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
@@ -70,6 +67,8 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         addClassNames("registrode-vehículo-view");
         vehiculos = new ArrayList<>();
         this.controlador = new OrdenVehiculos_InteractorImp(this);
+        //Mndo a traer los vhiculos del repositorio
+        this.controlador.consultarVehiculo();
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
@@ -112,9 +111,6 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
             }
         });
 
-        //Mndo a traer los vhiculos del repositorio
-        this.controlador.consultarVehiculo();
-
         // Configure Form
         cancel.addClickListener(e -> {
             clearForm();
@@ -125,11 +121,19 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
             try {
                 if (this.vehiculo == null) {
                     this.vehiculo = new Vehiculo();
+                    //this.vehiculo.setId_vehiculo(Integer.parseInt(this.id_vehiculo.getValue()));
+                    this.vehiculo.setId_vehiculo(Integer.parseInt(this.id_vehiculo.getValue()));
+                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + vehiculo.getId_vehiculo());
+                    this.vehiculo.setNombre_cliente(this.nombre_cliente.getValue());
+                    this.vehiculo.setMarca(this.marca.getValue());
+                    this.vehiculo.setModelo(this.modelo.getValue());
+                    this.vehiculo.setPlaca(this.placa.getValue());
+                    this.controlador.crearNuevoRegistro_Vehiculo(vehiculo);
                 }
                 //vehiculoService.update(this.vehiculo);
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
+                //Notification.show("Data updated");
                 UI.getCurrent().navigate(RegistrodeVehículoView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(
@@ -183,7 +187,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         if (vehiculoId.isPresent()) {
 
         	for(Vehiculo e: this.vehiculos) {
-        		if(e.getId_vehiculo().equals(vehiculoId.get())) {
+        		if(String.valueOf(e.getId_vehiculo()).equals(vehiculoId.get())) {
         			populateForm(e);
         			encontrado = true;
         			break;
@@ -211,10 +215,12 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 
         FormLayout formLayout = new FormLayout();
         id_vehiculo = new TextField("ID de vehículo");
-        nombre_cliente = new TextField("Nombre del Cliente");
-        marca = new TextField("Marca del Vehículo");
-        modelo = new TextField("Modelo del Vehículo");
-        placa = new TextField("Placa/Matricula");
+        id_vehiculo.setReadOnly(true);
+        id_vehiculo.setValue(String.valueOf(id));
+        nombre_cliente = new TextField("Cliente");
+        marca = new TextField("Marca");
+        modelo = new TextField("Modelo");
+        placa = new TextField("Placa");
         formLayout.add(id_vehiculo, nombre_cliente, marca, modelo, placa);
         
         id_vehiculo.setPrefixComponent(VaadinIcon.EDIT.create());
@@ -248,6 +254,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     }
 
     private void refreshGrid() {
+    	this.controlador.consultarVehiculo();
         grid.select(null);
         grid.getDataProvider().refreshAll();
     }
@@ -259,17 +266,17 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     private void populateForm(Vehiculo value) {
     	this.vehiculo = value;
         if(value == null){
-        	this.id_vehiculo.setValue("");
+        	this.id_vehiculo.setValue(String.valueOf(id));
             this.nombre_cliente.setValue("");
             this.marca.setValue("");
             this.modelo.setValue("");
             this.placa.setValue("");
         } else {
-        	this.id_vehiculo.setValue(String.valueOf(value.getId_vehiculo()));
-            this.nombre_cliente.setValue(value.getNombre_cliente());
-            this.marca.setValue(value.getMarca());
-            this.modelo.setValue(value.getModelo());
-            this.placa.setValue(value.getPlaca());
+        	this.id_vehiculo.setValue(String.valueOf(vehiculo.getId_vehiculo()));
+            this.nombre_cliente.setValue(vehiculo.getNombre_cliente());
+            this.marca.setValue(vehiculo.getMarca());
+            this.modelo.setValue(vehiculo.getModelo());
+            this.placa.setValue(vehiculo.getPlaca());
         }
     }
 
@@ -278,11 +285,20 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		Collection<Vehiculo> items = vehiculos;
 		grid.setItems(items);
 		this.vehiculos = vehiculos;
-
+    	id = this.vehiculos.size() + 1;
 	}
 
 	public Grid<Vehiculo> getGrid(){
 
     	return grid;
     }
+
+	@Override
+	public void mostrarMensajeCreacion(boolean respuesta) {
+		String mensajeMostrar = "Registro Exitoso!";
+		if(!respuesta) {
+			mensajeMostrar = "Error al Registrar";
+		}
+		 Notification.show(mensajeMostrar);
+	}
 }

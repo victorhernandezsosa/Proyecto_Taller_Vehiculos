@@ -56,7 +56,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     private TextField Costo;
 
     private final Button cancel = new Button("Cancelar");
-    private final Button save = new Button("Guardar");
+    private final Button save = new Button("Modificar");
 
     private final String SERVICIO_ID = "ServicioID";
     private final String SERVICIO_EDIT_ROUTE_TEMPLATE = "editar-servicio/%s/edit";

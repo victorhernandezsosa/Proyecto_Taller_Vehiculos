@@ -58,7 +58,7 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
     private TextField precioRepuesto;
 
     private final Button cancel = new Button("Cancelar");
-    private final Button save = new Button("Guardar");
+    private final Button save = new Button("Modificar");
 
 	private List<repuestos> repuesto;
 	private repuestos resp;
