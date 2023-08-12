@@ -1,13 +1,22 @@
 package com.tallervehiculos.uth.views.ordensr;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactor;
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactorImp;
 import com.tallervehiculos.uth.data.entity.OrdenSR;
+import com.tallervehiculos.uth.data.entity.OrdenSR_Report;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.data.entity.Servicios;
+import com.tallervehiculos.uth.data.entity.ServiciosReport;
 import com.tallervehiculos.uth.data.entity.repuestos;
+import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -15,14 +24,18 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.flow.theme.lumo.LumoUtility.AlignItems;
 import com.vaadin.flow.theme.lumo.LumoUtility.Display;
@@ -46,14 +59,17 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 	private ComboBox<Orden_reparacion> orden_id;
 	private ComboBox<Servicios> servicio_id;
 	private ComboBox<repuestos> repuesto_id;
-	private List<Orden_reparacion> orden_reparacion;
-	private List<Servicios> servicios;
+	private List<Orden_reparacion> orden;
+	private List<Servicios> servicio;
 	private List<repuestos> repuesto;
+	private List<OrdenSR> itemsSR;
 
 	private OrdenSR_interactor controlador;
 
 	public OrdenSRView() {
+		itemsSR=new ArrayList<>();
 		this.controlador = new OrdenSR_interactorImp(this);
+		
 		// this.controlador.consultarOrdenSR();
 		this.controlador.consultarOrden();
 		this.controlador.consultarRepuesto();
@@ -108,7 +124,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 		orden_id = new ComboBox<>("Orden");
 		orden_id.setRequiredIndicatorVisible(true);
-		orden_id.setItems(orden_reparacion);
+		orden_id.setItems(orden);
 		orden_id.setItemLabelGenerator(Orden_reparacion::getDescripcion_problema);
 
 		Div subSectionTwo = new Div();
@@ -116,7 +132,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 		servicio_id = new ComboBox<>("Servicio");
 		servicio_id.setRequiredIndicatorVisible(true);
-		servicio_id.setItems(servicios);
+		servicio_id.setItems(servicio);
 		servicio_id.setItemLabelGenerator(Servicios::getNombre_servicio);
 
 		repuesto_id = new ComboBox<>("Repuesto");
@@ -150,6 +166,16 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
                     button.setIcon(new Icon(VaadinIcon.TRASH));
                 })).setHeader("Manage");
 		
+		GridContextMenu<OrdenSR> menu = grid.addContextMenu();
+    	menu.addItem("Generar Reporte", event -> {
+    		if(this.itemsSR.isEmpty()) {
+        		Notification.show("No hay datos para generar el reporte");
+        	}else {
+        		Notification.show("Generando reporte PDF...");
+            	generarReporteServicios();
+        	}
+    	});
+		
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10, AlignItems.CENTER, JustifyContent.CENTER);
 		
@@ -159,6 +185,43 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		return nose;
 	}
 
+	private void generarReporteServicios() {
+		ReportGenerator generador = new ReportGenerator();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_DIR","logo.png");
+        parametros.put("LOGO_BAR","barcode.png");
+        OrdenSR_Report datasource = new OrdenSR_Report();
+        datasource.setData(itemsSR);
+        datasource.setServi(servicio);
+        datasource.setOrdenRepa(orden);
+        datasource.setRepuestos(repuesto);
+        String rutaPDF = generador.generarReportePDF("reporte_ordensr", parametros, datasource);
+
+        if (rutaPDF != null) {
+            StreamResource resource = new StreamResource("Reporte de OrdenSR.pdf", () -> {
+                try {
+                    return new FileInputStream(rutaPDF);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
+
+            Anchor url = new Anchor(resource, "Abrir reporte PDF");
+            url.setTarget("_blank");
+
+            add(url);
+
+            Notification notificacion = new Notification(url);
+            notificacion.setDuration(20000);
+            notificacion.open();
+        } else {
+            Notification notificacion = new Notification("Ocurrió un problema al generar el reporte");
+            notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            notificacion.setDuration(10000);
+            notificacion.open();
+        }
+    }
 	private Footer createFooter() {
 		Footer footer = new Footer();
 		footer.addClassNames(Display.FLEX, AlignItems.CENTER, JustifyContent.BETWEEN, Margin.Vertical.MEDIUM);
@@ -175,12 +238,12 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 	@Override
 	public void refrescarComboBoxOrden(List<Orden_reparacion> orden) {
-		this.orden_reparacion = orden;
+		this.orden = orden;
 	}
 
 	@Override
 	public void refrescarComboBoxServicios(List<Servicios> items_servicios) {
-		this.servicios = items_servicios;
+		this.servicio = items_servicios;
 	}
 
 	@Override
@@ -192,6 +255,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 	public void refrescarGridOrdenSR(List<OrdenSR> itemsSR) {
 		Collection<OrdenSR> items = itemsSR;
 		grid.setItems(items);
+		this.itemsSR = itemsSR;
 
 	}
 
