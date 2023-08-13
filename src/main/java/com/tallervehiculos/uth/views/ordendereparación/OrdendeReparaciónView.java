@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_InteractorImp;
 import com.tallervehiculos.uth.data.entity.OrdenReparacionReport;
@@ -55,9 +53,13 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     private TextField estado_reparacion;
     private List<Orden_reparacion> orden;
     private List<Vehiculo> vehiculo;
+    private Integer control_id;
+    //private Integer control = 0;
+    
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
+    private final Button delete = new Button("Eliminar");
 
     private Orden_reparacion ordenes;
     private OrdenReparacion_Interactor controlador;
@@ -70,6 +72,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
+        splitLayout.setSplitterPosition(75);
 
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
@@ -98,16 +101,17 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 UI.getCurrent().navigate(String.format(ORDEN_REPARACION_EDIT_ROUTE_TEMPLATE, event.getValue().getId_orden()));
+                control_id = Integer.parseInt(event.getValue().getId_orden());
             } else {
                 clearForm();
                 UI.getCurrent().navigate(OrdendeReparaciónView.class);
             }
         });
 
-      //Mndo a traer las ordenes del repositorio
+
+        //Mando a traer las ordenes del repositorio
         this.controlador.consultarOrden();
         this.controlador.consultarVehiculo();
-
 
         // Configure Form
         cancel.addClickListener(e -> {
@@ -119,11 +123,19 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
             try {
                 if (this.ordenes == null) {
                     this.ordenes = new Orden_reparacion();
+                    
+                    this.ordenes.setVehiculo_id(this.vehiculo_id.getValue().getId_vehiculo());
+                    this.ordenes.setDescripcion_problema(this.descripcion_problema.getValue());
+                    this.ordenes.setEstado_reparacion(this.estado_reparacion.getValue());
+                    this.controlador.crearNuevaOrden_Reparacion(ordenes);
+                } else {
+                	this.ordenes.setVehiculo_id(this.vehiculo_id.getValue().getId_vehiculo());
+                    this.ordenes.setDescripcion_problema(this.descripcion_problema.getValue());
+                    this.ordenes.setEstado_reparacion(this.estado_reparacion.getValue());
+                    this.controlador.actualizarNuevaOrden_Reparacion(ordenes);
                 }
-                //.update(this.orden_reparacion);
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
                 UI.getCurrent().navigate(OrdendeReparaciónView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(
@@ -132,6 +144,13 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
+        
+        delete.addClickListener(e -> {
+        	this.controlador.eliminarOrden_Reparacion(control_id);
+            clearForm();
+            refreshGrid();
+        });
+        
     }
 
     private void generarReporteReparacion() {
@@ -202,14 +221,14 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        id_orden = new TextField("ID");
+        //id_orden = new TextField("ID");
         vehiculo_id = new ComboBox<>("Vehiculo ID");
         descripcion_problema = new TextField("Problema");
         estado_reparacion = new TextField("Estado");
         id_orden = new TextField("ID de Orden");
         descripcion_problema = new TextField("Descripción de Problema");
         estado_reparacion = new TextField("Estado Actual de Atención");
-        formLayout.add(id_orden, vehiculo_id, descripcion_problema, estado_reparacion);
+        formLayout.add(vehiculo_id, descripcion_problema, estado_reparacion);
        
         id_orden.setPrefixComponent(VaadinIcon.EDIT.create());
         vehiculo_id.setPrefixComponent(VaadinIcon.CAR.create());
@@ -227,7 +246,9 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         buttonLayout.setClassName("button-layout");
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+                ButtonVariant.LUMO_ERROR);
+        buttonLayout.add(save,  delete, cancel);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -241,6 +262,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
+        this.controlador.consultarOrden();
     }
 
     private void clearForm() {
@@ -251,19 +273,16 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     	this.ordenes = value;
 
         if(value == null){
-        	this.id_orden.setValue("");
+        	//this.id_orden.setValue("");
             this.vehiculo_id.setValue(null);
             this.descripcion_problema.setValue("");
             this.estado_reparacion.setValue("");
         } else {
-        	this.id_orden.setValue(value.getId_orden());
+        	//this.id_orden.setValue(value.getId_orden());
             this.vehiculo_id.setValue(buscarVehiculoSeleccionado(value.getVehiculo_id()));
             this.descripcion_problema.setValue(value.getDescripcion_problema());
             this.estado_reparacion.setValue(value.getEstado_reparacion());
-
         }
-        
-        
     }
 
     private Vehiculo buscarVehiculoSeleccionado(Integer id_vehiculo) {
@@ -271,6 +290,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     	for(Vehiculo v : vehiculo) {
     		if(v.getId_vehiculo() == id_vehiculo) {
     			seleccionado = v;
+    			//control = 1;
     			break;
     		}
     	}
@@ -284,7 +304,6 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     		grid.setItems(items);
     		this.orden = items_orden;
         	}
-
 	}
 
     @Override
@@ -298,4 +317,31 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     	return grid;
     }
 
+	@Override
+	public void mostrarMensajeCreacion(boolean respuesta) {
+		String mensajeMostrar = "Registro Exitoso!";
+		if(!respuesta) {
+			mensajeMostrar = "Error al Registrar";
+		}
+		Notification.show(mensajeMostrar);
+	}
+
+	@Override
+	public void mostrarMensajeAtualizacion(boolean respuesta) {
+		String mensajeMostrar = "Registro Actualizado Exitosamente!";
+		if(!respuesta) {
+			mensajeMostrar = "Error al Actualizar Registro";
+		}
+		Notification.show(mensajeMostrar);
+	}
+
+	@Override
+	public void mostrarMensajeEliminacion(boolean respuesta) {
+		String mensajeMostrar = "Registro eliminado exitosamente!";
+		if(!respuesta) {
+			mensajeMostrar = "Registro no pudo ser eliminado";
+		}
+		 Notification.show(mensajeMostrar);
+	}
+	
 }

@@ -50,7 +50,7 @@ import com.vaadin.flow.server.StreamResource;
 public class ServiciosView extends Div implements HasComponents, HasStyle, ServiciosViewModel,BeforeEnterObserver {
 
 	private final Grid<Servicios> grid = new Grid<>(Servicios.class, false);
-	private TextField id_servicio;
+	//private TextField id_servicio;
     private TextField Nombre_servicio;
     private TextField Subservicio;
     private TextField Costo;
@@ -118,11 +118,16 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
             try {
                 if (this.servi == null) {
                     this.servi = new Servicios();
+                } else {
+                	this.servi.setNombre_servicio(this.Nombre_servicio.getValue());
+                	this.servi.setSubservicio(this.Subservicio.getValue());
+                	this.servi.setCosto(this.Costo.getValue());
+                	this.controlador.actualizarServicios(servi);
                 }
                 //.update(this.orden_reparacion);
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
+                //Notification.show("Data updated");
                 UI.getCurrent().navigate(ServiciosView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(
@@ -203,12 +208,12 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     private void populateForm(Servicios value) {
     	this.servi = value;
         if(value == null){
-        	this.id_servicio.setValue("");
+        	//this.id_servicio.setValue("");
             this.Nombre_servicio.setValue("");
             this.Subservicio.setValue("");
             this.Costo.setValue("");
         } else {
-        	this.id_servicio.setValue(value.getId_servicio());
+        	//this.id_servicio.setValue(value.getId_servicio());
             this.Nombre_servicio.setValue(value.getNombre_servicio());
             this.Subservicio.setValue(value.getSubservicio());
             this.Costo.setValue(value.getCosto());
@@ -225,13 +230,13 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         editorLayoutDiv.add(editorContentLayout);
 
         FormLayout formLayout = new FormLayout();
-        id_servicio = new TextField("ID de Servicio");
+        //id_servicio = new TextField("ID de Servicio");
         Nombre_servicio = new TextField("Servicio");
         Subservicio = new TextField("Subservicio");
         Costo = new TextField("Costo de Servicio");
-        formLayout.add(id_servicio, Nombre_servicio, Subservicio, Costo);
+        formLayout.add(Nombre_servicio, Subservicio, Costo);
         
-        id_servicio.setPrefixComponent(VaadinIcon.EDIT.create());
+        //id_servicio.setPrefixComponent(VaadinIcon.EDIT.create());
         Nombre_servicio.setPrefixComponent(VaadinIcon.COG.create());
         Subservicio.setPrefixComponent(VaadinIcon.COGS.create());
         Costo.setPrefixComponent(VaadinIcon.MONEY.create());
@@ -284,5 +289,14 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     public Grid<Servicios> getGrid(){
     	return grid;
     }
+
+	@Override
+	public void mostrarMensajeAtualizacion(boolean respuesta) {
+		String mensajeMostrar = "Registro Actualizado Exitosamente!";
+		if(!respuesta) {
+			mensajeMostrar = "Error al Actualizar Registro";
+		}
+		 Notification.show(mensajeMostrar);
+	}
 
 }

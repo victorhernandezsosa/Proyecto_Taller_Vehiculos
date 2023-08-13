@@ -2,10 +2,12 @@ package com.tallervehiculos.uth.data.controller;
 
 import java.io.IOException;
 
+import com.tallervehiculos.uth.data.entity.OrdenSR;
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseOrdenSR;
 import com.tallervehiculos.uth.data.entity.ResponseRepuestos;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
+import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.ordensr.OrdenSRViewModel;
 
@@ -39,6 +41,30 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 	}
 	
 	@Override
+	public void crearOrdenSR(OrdenSR nuevo) {
+		try {
+			boolean respuesta = this.modelo.createOrdenSR(nuevo);
+			this.vista.mostrarMensajeCreacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void eliminarOrdenSR(Integer ID_ORDENSR) {
+		try {
+			boolean respuesta = this.modelo.deleteOrdenSR(ID_ORDENSR);
+			this.vista.mostrarMensajeEliminacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	@Override
 	public void consultarOrden() {
 		try {
 			ResponseOrden respuesta = this.modelo.getOrden();
@@ -46,7 +72,6 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -57,7 +82,6 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -68,7 +92,6 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

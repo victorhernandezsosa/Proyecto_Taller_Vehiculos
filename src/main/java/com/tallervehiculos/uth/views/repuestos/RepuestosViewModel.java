@@ -6,5 +6,6 @@ import com.tallervehiculos.uth.data.entity.repuestos;
 
 public interface RepuestosViewModel {
 	void refrescarGridRepuestos(List<repuestos> repuestos);
+	void mostrarMensajeAtualizacion(boolean respuesta);
 
 }

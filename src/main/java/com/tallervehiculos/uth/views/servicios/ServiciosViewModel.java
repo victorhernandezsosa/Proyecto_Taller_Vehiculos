@@ -6,4 +6,5 @@ import com.tallervehiculos.uth.data.entity.Servicios;
 
 public interface ServiciosViewModel {
 	void refrescarGridServicios(List<Servicios> Items_servicios);
+	void mostrarMensajeAtualizacion(boolean respuesta);
 }

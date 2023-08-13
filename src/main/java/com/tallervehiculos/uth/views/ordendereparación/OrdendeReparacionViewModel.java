@@ -8,6 +8,9 @@ import com.tallervehiculos.uth.data.entity.Vehiculo;
 public interface OrdendeReparacionViewModel {
 	void refrescarGridOrden(List<Orden_reparacion> orden);
 	void refrescarComboBoxVehiculos(List<Vehiculo> items);
+	void mostrarMensajeCreacion(boolean respuesta);
+	void mostrarMensajeAtualizacion(boolean respuesta);
+	void mostrarMensajeEliminacion(boolean respuesta);
 
 	//void refrescarGridOrden(List<Orden_reparacion> items_orden);
 

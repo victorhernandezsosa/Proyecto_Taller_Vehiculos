@@ -2,6 +2,7 @@ package com.tallervehiculos.uth.views.repuestos;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
 	 private final String REPUESTO_ID = "repuestoID";
 	 private final String REPUESTO_EDIT_ROUTE_TEMPLATE = "editar-repuesto/%s/edit";
 
-	private TextField idRepuesto;
+	//private TextField idRepuesto;
     private TextField nombreRepuesto;
     private TextField precioRepuesto;
 
@@ -109,11 +110,15 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
             try {
                 if (this.resp == null) {
                     this.resp = new repuestos();
+                } else {
+                	this.resp.setNombre_repuesto(this.nombreRepuesto.getValue());
+                	this.resp.setPrecio(this.precioRepuesto.getValue());
+                	this.controlador.actualizarRepuesto(resp);
                 }
                 //.update(this.orden_reparacion);
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
+                //Notification.show("Data updated");
                 UI.getCurrent().navigate(RepuestosView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(
@@ -193,11 +198,11 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
     private void populateForm(repuestos value) {
     	this.resp = value;
         if(value == null){
-        	this.idRepuesto.setValue("");
+        	//this.idRepuesto.setValue("");
             this.nombreRepuesto.setValue("");
             this.precioRepuesto.setValue("");
         } else {
-        	this.idRepuesto.setValue(value.getId_repuesto());
+        	//this.idRepuesto.setValue(value.getId_repuesto());
             this.nombreRepuesto.setValue(value.getNombre_repuesto());
             this.precioRepuesto.setValue(value.getPrecio());
         }
@@ -213,12 +218,12 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
         editorLayoutDiv.add(editorContentLayout);
 
         FormLayout formLayout = new FormLayout();
-        idRepuesto = new TextField("ID de Repuesto");
+        //idRepuesto = new TextField("ID de Repuesto");
         nombreRepuesto = new TextField("Repuesto");
         precioRepuesto = new TextField("Precio");
-        formLayout.add(idRepuesto, nombreRepuesto, precioRepuesto);
+        formLayout.add(nombreRepuesto, precioRepuesto);
         
-        idRepuesto.setPrefixComponent(VaadinIcon.EDIT.create());
+        //idRepuesto.setPrefixComponent(VaadinIcon.EDIT.create());
         nombreRepuesto.setPrefixComponent(VaadinIcon.STOCK.create());
         precioRepuesto.setPrefixComponent(VaadinIcon.MONEY.create());
   
@@ -276,6 +281,15 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
 
     	return grid;
     }
+
+	@Override
+	public void mostrarMensajeAtualizacion(boolean respuesta) {
+		String mensajeMostrar = "Registro Actualizado Exitosamente!";
+		if(!respuesta) {
+			mensajeMostrar = "Error al Actualizar Registro";
+		}
+		 Notification.show(mensajeMostrar);
+	}
 
 
 

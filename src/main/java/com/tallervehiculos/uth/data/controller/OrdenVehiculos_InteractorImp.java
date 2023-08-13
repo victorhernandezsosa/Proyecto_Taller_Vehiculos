@@ -39,4 +39,24 @@ public class OrdenVehiculos_InteractorImp implements OrdenVehiculos_Interactor {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void actualizarNuevoRegistro_Vehiculo(Vehiculo actualizar) {
+		try {
+			boolean respuesta = this.modelo.updateRegistro_Vehiculo(actualizar);
+			this.vista.mostrarMensajeAtualizacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void eliminarRegistro_Vehiculo(Integer ID_VEHICULO) {
+		try {
+			boolean respuesta = this.modelo.deleteRegistro_Vehiculo(ID_VEHICULO);
+			this.vista.mostrarMensajeEliminacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

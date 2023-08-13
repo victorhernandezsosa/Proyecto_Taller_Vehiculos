@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
+import com.nimbusds.jose.util.events.Event;
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_InteractorImp;
 import com.tallervehiculos.uth.data.entity.RegistroVehiculoReport;
@@ -48,16 +50,17 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 
     private final Grid<Vehiculo> grid = new Grid<>(Vehiculo.class, false);
 
-    private TextField id_vehiculo;
+    //private TextField id_vehiculo;
     private TextField nombre_cliente;
     private TextField marca;
     private TextField modelo;
     private TextField placa;
     private List<Vehiculo> vehiculos;
-    private Integer id;
+    private Integer control_id;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
+    private final Button delete = new Button("Eliminar");
 
     private Vehiculo vehiculo;
     private OrdenVehiculos_Interactor controlador;
@@ -72,6 +75,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
+        splitLayout.setSplitterPosition(75);
 
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
@@ -105,6 +109,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 UI.getCurrent().navigate(String.format(VEHICULO_EDIT_ROUTE_TEMPLATE, event.getValue().getId_vehiculo()));
+                control_id = event.getValue().getId_vehiculo();
             } else {
                 clearForm();
                 UI.getCurrent().navigate(RegistrodeVehículoView.class);
@@ -122,13 +127,19 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
                 if (this.vehiculo == null) {
                     this.vehiculo = new Vehiculo();
                     //this.vehiculo.setId_vehiculo(Integer.parseInt(this.id_vehiculo.getValue()));
-                    this.vehiculo.setId_vehiculo(Integer.parseInt(this.id_vehiculo.getValue()));
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + vehiculo.getId_vehiculo());
+                    //this.vehiculo.setId_vehiculo(id);
+                    //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + vehiculo.getId_vehiculo());
                     this.vehiculo.setNombre_cliente(this.nombre_cliente.getValue());
                     this.vehiculo.setMarca(this.marca.getValue());
                     this.vehiculo.setModelo(this.modelo.getValue());
                     this.vehiculo.setPlaca(this.placa.getValue());
                     this.controlador.crearNuevoRegistro_Vehiculo(vehiculo);
+                } else {
+                	this.vehiculo.setNombre_cliente(this.nombre_cliente.getValue());
+                    this.vehiculo.setMarca(this.marca.getValue());
+                    this.vehiculo.setModelo(this.modelo.getValue());
+                    this.vehiculo.setPlaca(this.placa.getValue());
+                    this.controlador.actualizarNuevoRegistro_Vehiculo(vehiculo);
                 }
                 //vehiculoService.update(this.vehiculo);
                 clearForm();
@@ -142,6 +153,13 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
+        
+        delete.addClickListener(e -> {
+        	this.controlador.eliminarRegistro_Vehiculo(control_id);
+            clearForm();
+            refreshGrid();
+        });
+        
     }
 
     private void generarReporteRegistro() {
@@ -214,16 +232,16 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        id_vehiculo = new TextField("ID de vehículo");
-        id_vehiculo.setReadOnly(true);
-        id_vehiculo.setValue(String.valueOf(id));
+        //id_vehiculo = new TextField("ID de vehículo");
+        //id_vehiculo.setReadOnly(true);
+        //id_vehiculo.setValue(String.valueOf(id));
         nombre_cliente = new TextField("Cliente");
         marca = new TextField("Marca");
         modelo = new TextField("Modelo");
         placa = new TextField("Placa");
-        formLayout.add(id_vehiculo, nombre_cliente, marca, modelo, placa);
+        formLayout.add(nombre_cliente, marca, modelo, placa);
         
-        id_vehiculo.setPrefixComponent(VaadinIcon.EDIT.create());
+        //id_vehiculo.setPrefixComponent(VaadinIcon.EDIT.create());
         nombre_cliente.setPrefixComponent(VaadinIcon.USER.create());
         marca.setPrefixComponent(VaadinIcon.INFO_CIRCLE_O.create());
         modelo.setPrefixComponent(VaadinIcon.INFO_CIRCLE_O.create());
@@ -242,7 +260,9 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         buttonLayout.setClassName("button-layout");
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+                ButtonVariant.LUMO_ERROR);
+        buttonLayout.add(save,  delete, cancel);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -266,17 +286,18 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     private void populateForm(Vehiculo value) {
     	this.vehiculo = value;
         if(value == null){
-        	this.id_vehiculo.setValue(String.valueOf(id));
+        	//this.id_vehiculo.setValue(String.valueOf(id));
+        	//this.id_vehiculo.setValue("");
             this.nombre_cliente.setValue("");
             this.marca.setValue("");
             this.modelo.setValue("");
             this.placa.setValue("");
         } else {
-        	this.id_vehiculo.setValue(String.valueOf(vehiculo.getId_vehiculo()));
-            this.nombre_cliente.setValue(vehiculo.getNombre_cliente());
-            this.marca.setValue(vehiculo.getMarca());
-            this.modelo.setValue(vehiculo.getModelo());
-            this.placa.setValue(vehiculo.getPlaca());
+        	//this.id_vehiculo.setValue(String.valueOf(value.getId_vehiculo()));
+            this.nombre_cliente.setValue(value.getNombre_cliente());
+            this.marca.setValue(value.getMarca());
+            this.modelo.setValue(value.getModelo());
+            this.placa.setValue(value.getPlaca());
         }
     }
 
@@ -285,7 +306,6 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		Collection<Vehiculo> items = vehiculos;
 		grid.setItems(items);
 		this.vehiculos = vehiculos;
-    	id = this.vehiculos.size() + 1;
 	}
 
 	public Grid<Vehiculo> getGrid(){
@@ -298,6 +318,25 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		String mensajeMostrar = "Registro Exitoso!";
 		if(!respuesta) {
 			mensajeMostrar = "Error al Registrar";
+		}
+		 Notification.show(mensajeMostrar);
+	}
+
+	@Override
+	public void mostrarMensajeEliminacion(boolean respuesta) {
+		String mensajeMostrar = "Registro eliminado exitosamente!";
+		if(!respuesta) {
+			mensajeMostrar = "Registro no pudo ser eliminado";
+		}
+		 Notification.show(mensajeMostrar);
+		 this.controlador.consultarVehiculo();
+	}
+
+	@Override
+	public void mostrarMensajeAtualizacion(boolean respuesta) {
+		String mensajeMostrar = "Registro Actualizado Exitosamente!";
+		if(!respuesta) {
+			mensajeMostrar = "Error al Actualizar Registro";
 		}
 		 Notification.show(mensajeMostrar);
 	}

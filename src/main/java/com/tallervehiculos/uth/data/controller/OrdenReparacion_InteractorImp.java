@@ -2,8 +2,10 @@ package com.tallervehiculos.uth.data.controller;
 
 import java.io.IOException;
 
+import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
+import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparacionViewModel;
 
@@ -30,6 +32,40 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 
 	}
 	
+	@Override
+	public void crearNuevaOrden_Reparacion(Orden_reparacion nuevo) {
+		try {
+			boolean respuesta = this.modelo.createOrden_Reparacion(nuevo);
+			this.vista.mostrarMensajeCreacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void actualizarNuevaOrden_Reparacion(Orden_reparacion actualizar) {
+		try {
+			boolean respuesta = this.modelo.updateOrden_Reparacion(actualizar);
+			this.vista.mostrarMensajeAtualizacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void eliminarOrden_Reparacion(Integer ID_ORDEN) {
+		try {
+			boolean respuesta = this.modelo.deleteOrden_Reparacion(ID_ORDEN);
+			this.vista.mostrarMensajeEliminacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	//CONSULTA DE VEHICULOS PARA CARGAR COMBOBOX
 	@Override
 	public void consultarVehiculo() {
 		try {

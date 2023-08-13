@@ -7,21 +7,13 @@ public class Orden_reparacion/* extends AbstractEntity*/ {
 
     private String id_orden;
     private Integer vehiculo_id;
-    //private String nombre;
 	private String descripcion_problema;
     private String estado_reparacion;
 
-
-    /*public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}*/
     public String getDescripcion_problema() {
         return descripcion_problema;
     }
-    public String getId_orden() {
+	public String getId_orden() {
 		return id_orden;
 	}
 	public void setId_orden(String id_orden) {

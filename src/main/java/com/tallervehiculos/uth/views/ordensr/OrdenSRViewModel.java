@@ -14,4 +14,6 @@ public interface OrdenSRViewModel {
 	void refrescarComboBoxServicios(List<Servicios> items_servicios);
 	void refrescarComboBoxRepuestos(List<repuestos> items);
 	void refrescarGridOrdenSR(List<OrdenSR> items);
+	void mostrarMensajeCreacion(boolean respuesta);
+	void mostrarMensajeEliminacion(boolean respuesta);
 }

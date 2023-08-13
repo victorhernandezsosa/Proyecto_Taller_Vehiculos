@@ -3,6 +3,8 @@ package com.tallervehiculos.uth.data.controller;
 import java.io.IOException;
 
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
+import com.tallervehiculos.uth.data.entity.Servicios;
+import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.servicios.ServiciosViewModel;
 
@@ -27,7 +29,17 @@ public class Servicios_interactorImp implements Servicios_interactor {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-
 	}
+	
+	@Override
+	public void actualizarServicios(Servicios actualizar) {
+		try {
+			boolean respuesta = this.modelo.updateServicios(actualizar);
+			this.vista.mostrarMensajeAtualizacion(respuesta);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 }

@@ -52,7 +52,7 @@ public class MainLayout extends AppLayout {
     	    Icon vaadinIcon = VaadinIcon.TOOLS.create();
     	    vaadinIcon.setSize("24px");
 
-    	    Span appNameText = new Span("   Los PITS Corp  ");
+    	    Span appNameText = new Span("   Los PITS Corp230  ");
     	    Span appNameSubtext = new Span("   Página Oficial  ");
 
     	    VerticalLayout textLayout = new VerticalLayout(appNameText, appNameSubtext);
