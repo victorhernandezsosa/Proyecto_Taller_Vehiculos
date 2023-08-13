@@ -38,6 +38,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 
 @PageTitle("Orden de Reparación")
 @Route(value = "orden-reparacion/:orden_reparacionID?/:action?(edit)", layout = MainLayout.class)
@@ -84,8 +85,8 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         grid.addColumn(Orden_reparacion::getVehiculo_id).setHeader("ID de Vehículo").setAutoWidth(true);
         grid.addColumn(Orden_reparacion::getDescripcion_problema).setHeader("Descripción de Problema").setAutoWidth(true);
         grid.addColumn(Orden_reparacion::getEstado_reparacion).setHeader("Estado Actual de Atención").setAutoWidth(true);
-       
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.addClassName(Margin.Top.XLARGE);
         
         GridContextMenu<Orden_reparacion> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {

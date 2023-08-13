@@ -9,7 +9,22 @@ public class OrdenSR /*extends AbstractEntity */{
     private String orden_id;
     private String servicio_id;
     private String repuesto_id;
+    private String nombre_cliente;
+    private String total_costo;
+    
 
+	public String getNombre_cliente() {
+		return nombre_cliente;
+	}
+	public void setNombre_cliente(String nombre_cliente) {
+		this.nombre_cliente = nombre_cliente;
+	}
+	public String getTotal_costo() {
+		return total_costo;
+	}
+	public void setTotal_costo(String total_costo) {
+		this.total_costo = total_costo;
+	}
 	public Integer getId_ordensr() {
 		return id_ordensr;
 	}

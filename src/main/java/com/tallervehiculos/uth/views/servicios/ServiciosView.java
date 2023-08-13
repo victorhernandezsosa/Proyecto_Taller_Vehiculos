@@ -42,6 +42,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 
 
 
@@ -86,6 +87,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     	grid.addColumn(Servicios::getSubservicio).setHeader("Subservicio");
     	grid.addColumn(Servicios::getCosto).setHeader("Costo de Servicio");
     	grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+    	grid.addClassName(Margin.Top.XLARGE);
 
     	GridContextMenu<Servicios> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {

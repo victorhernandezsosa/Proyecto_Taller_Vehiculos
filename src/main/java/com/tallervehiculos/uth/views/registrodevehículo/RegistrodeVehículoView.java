@@ -39,6 +39,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 
 @PageTitle("Registro de Vehículo")
 @Route(value = "registro-vehiculo/:vehiculoID?/:action?(edit)", layout = MainLayout.class)
@@ -92,6 +93,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());*/
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.addClassName(Margin.Top.XLARGE);
         
         
         

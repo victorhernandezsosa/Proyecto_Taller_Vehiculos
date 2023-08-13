@@ -107,8 +107,8 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
                 this.ordensr = new OrdenSR();
 
                 this.ordensr.setOrden_id(this.orden_id.getValue().getId_orden());
+                this.ordensr.setServicio_id(this.servicio_id.getValue().getId_servicio());
                 this.ordensr.setRepuesto_id(this.repuesto_id.getValue().getId_repuesto());
-                this.ordensr.setServicio_id(this.repuesto_id.getValue().getId_repuesto());
                 this.controlador.crearOrdenSR(ordensr);
             } 
             clearForm();
@@ -182,9 +182,11 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 		grid = new Grid<>(OrdenSR.class, false);
 		grid.addColumn(ordensr -> ordensr.getId_ordensr()).setHeader("ID").setAutoWidth(true);
+		grid.addColumn(OrdenSR::getNombre_cliente).setHeader("Cliente").setAutoWidth(true);
 		grid.addColumn(OrdenSR::getOrden_id).setHeader("Problema Vehiculo").setAutoWidth(true);
-		grid.addColumn(OrdenSR::getRepuesto_id).setHeader("Repuesto").setAutoWidth(true);
 		grid.addColumn(OrdenSR::getServicio_id).setHeader("Servicio").setAutoWidth(true);
+		grid.addColumn(OrdenSR::getRepuesto_id).setHeader("Repuesto").setAutoWidth(true);
+		grid.addColumn(OrdenSR::getTotal_costo).setHeader("Total").setAutoWidth(true);
 		grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, ordensr) -> {
                     button.addThemeVariants(ButtonVariant.LUMO_ICON,
@@ -209,7 +211,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
     	});
 		
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-		grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10, AlignItems.CENTER, JustifyContent.CENTER);
+		grid.addClassNames(LumoUtility.BorderColor.CONTRAST_10, AlignItems.CENTER, JustifyContent.CENTER, Margin.Top.XLARGE);
 		
 		VerticalLayout nose = new VerticalLayout(header, grid);
 		nose.setAlignItems(FlexComponent.Alignment.STRETCH);
