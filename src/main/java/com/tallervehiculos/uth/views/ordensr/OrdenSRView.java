@@ -154,7 +154,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		orden_id.setRequiredIndicatorVisible(true);
 		orden_id.setItems(orden);
 		orden_id.setItemLabelGenerator(Orden_reparacion::getDescripcion_problema);
-
+      
 		Div subSectionTwo = new Div();
 		subSectionTwo.addClassNames(Display.FLEX, FlexWrap.WRAP, Gap.MEDIUM);
 
@@ -167,6 +167,10 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		repuesto_id.setRequiredIndicatorVisible(true);
 		repuesto_id.setItems(repuesto);
 		repuesto_id.setItemLabelGenerator(repuestos::getNombre_repuesto);
+		
+		orden_id.setPrefixComponent(VaadinIcon.FILE_TEXT_O.create());
+		servicio_id.setPrefixComponent(VaadinIcon.COG_O.create());
+		repuesto_id.setPrefixComponent(VaadinIcon.PACKAGE.create());
 
 		subSectionTwo.add(servicio_id, repuesto_id);
 

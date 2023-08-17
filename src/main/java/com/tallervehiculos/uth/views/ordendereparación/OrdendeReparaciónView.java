@@ -223,7 +223,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
         FormLayout formLayout = new FormLayout();
         //id_orden = new TextField("ID");
-        vehiculo_id = new ComboBox<>("Vehiculo ID");
+        vehiculo_id = new ComboBox<>("Placa de Vehículo");
         descripcion_problema = new TextField("Problema");
         estado_reparacion = new TextField("Estado");
         id_orden = new TextField("ID de Orden");
