@@ -69,7 +69,7 @@ public class OrdenReparacionReport implements JRDataSource{
 		if("ID".equals(jrField.getName())) {
 			return orden.get(counter).getId_orden().toString();
 		}else if("VEHICULO_ID".equals(jrField.getName())) {
-			return orden.get(counter).getVehiculo_id();
+			return orden.get(counter).getVehiculo_id().toString();
 		}else if("PROBLEMA".equals(jrField.getName())) {
 			return orden.get(counter).getDescripcion_problema();
 		}else if("ESTADO".equals(jrField.getName())) {

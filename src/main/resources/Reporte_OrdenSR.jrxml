@@ -60,6 +60,8 @@
 	<field name="NOMBRE_VEHICULO" class="java.lang.String"/>
 	<field name="REPUESTO" class="java.lang.String"/>
 	<field name="SERVICIO" class="java.lang.String"/>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="TOTAL" class="java.lang.String"/>
 	<title>
 		<band height="81" splitType="Stretch">
 			<frame>
@@ -93,7 +95,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="23">
+		<band height="38">
 			<rectangle>
 				<reportElement style="Title" x="0" y="0" width="555" height="21" backcolor="#5BE187" uuid="33a4287e-61b8-44c4-8777-c360a5ae9204"/>
 				<graphicElement>
@@ -101,7 +103,7 @@
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="120" height="20" uuid="0b5012b4-ac5a-4f6c-a2c9-7188772c6313">
+				<reportElement x="0" y="0" width="70" height="20" uuid="0b5012b4-ac5a-4f6c-a2c9-7188772c6313">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -110,7 +112,7 @@
 				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="0" width="120" height="20" uuid="62507be6-f34e-4b9b-9045-b83e50ca4209">
+				<reportElement x="151" y="0" width="120" height="20" uuid="62507be6-f34e-4b9b-9045-b83e50ca4209">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -119,14 +121,14 @@
 				<text><![CDATA[Problema Vehiculo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="0" width="177" height="20" uuid="1f3c36b4-09a7-4835-955b-e753b7a12170"/>
+				<reportElement x="270" y="0" width="113" height="20" uuid="1f3c36b4-09a7-4835-955b-e753b7a12170"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Repuesto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="417" y="0" width="138" height="20" uuid="629a5a11-2478-400d-9891-ead2d5a9a3e0">
+				<reportElement x="383" y="0" width="90" height="20" uuid="629a5a11-2478-400d-9891-ead2d5a9a3e0">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -134,10 +136,30 @@
 				</textElement>
 				<text><![CDATA[Servicio]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="81" height="20" uuid="d64f7202-7ee5-480c-ba64-3cf5bbab8dc2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="473" y="0" width="80" height="20" uuid="9d0fbfd3-9c80-4182-83fb-60956f71b4ce">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24">
+		<band height="45">
 			<rectangle>
 				<reportElement style="Title" mode="Opaque" x="0" y="0" width="555" height="21" backcolor="#E6E6E6" uuid="46c13a63-ec0a-4c4d-9b7c-c55fb9d0b2f0"/>
 				<graphicElement>
@@ -145,27 +167,43 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="0" y="0" width="120" height="20" uuid="1d1fff63-c57d-4b27-8103-03047b72509b"/>
+				<reportElement x="2" y="0" width="68" height="20" uuid="1d1fff63-c57d-4b27-8103-03047b72509b"/>
 				<box leftPadding="0" rightPadding="0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="0" width="120" height="20" uuid="55ddb4c7-1044-49ec-bb37-a20100839572"/>
+				<reportElement x="150" y="0" width="120" height="20" uuid="55ddb4c7-1044-49ec-bb37-a20100839572"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NOMBRE_VEHICULO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="0" width="177" height="20" uuid="e90a4520-b61c-4e85-ae56-9a370a0bf1e5"/>
+				<reportElement x="271" y="0" width="112" height="20" uuid="e90a4520-b61c-4e85-ae56-9a370a0bf1e5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{REPUESTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="417" y="0" width="138" height="20" uuid="a3d448ca-444f-487c-b138-7a704498511b">
+				<reportElement x="383" y="0" width="96" height="20" uuid="a3d448ca-444f-487c-b138-7a704498511b">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{SERVICIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="80" height="20" uuid="301c7913-b08b-4fde-a047-606b91894b40">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CLIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="479" y="0" width="66" height="20" uuid="987a8ce9-302b-4426-9d39-f1b7ae106b9c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

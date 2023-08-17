@@ -67,6 +67,8 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 	private List<Servicios> servicio;
 	private List<repuestos> repuesto;
 	private List<OrdenSR> itemsSR;
+	private List<Vehiculo> vehiculos;
+
 
 	private OrdenSR_interactor controlador;
 	private OrdenSR ordensr;
@@ -233,6 +235,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
         datasource.setServi(servicio);
         datasource.setOrdenRepa(orden);
         datasource.setRepuestos(repuesto);
+        //datasource.setVehiculo(vehiculos);
         String rutaPDF = generador.generarReportePDF("reporte_ordensr", parametros, datasource);
 
         if (rutaPDF != null) {

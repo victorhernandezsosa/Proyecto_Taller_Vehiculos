@@ -12,6 +12,7 @@ public class OrdenSR_Report implements JRDataSource{
 	private List<OrdenSR> itemsSR;
 	private List<Servicios> servicio;
 	private List<repuestos> repuesto;
+	//private List<Vehiculo> vehiculos;
 	private int counter = -1;
 	private int maxCounter = 0;
 	
@@ -34,7 +35,6 @@ public class OrdenSR_Report implements JRDataSource{
 		this.repuesto = repuesto;
 		this.maxCounter = this.repuesto.size() -1;
 	}
-	
 	
 
 	public List<repuestos> getRepuesto() {
@@ -120,12 +120,16 @@ public class OrdenSR_Report implements JRDataSource{
 	public Object getFieldValue(JRField jrField) throws JRException {
 	    if ("ID".equals(jrField.getName())) {
 	        return itemsSR.get(counter).getId_ordensr().toString();
-	    } else if ("NOMBRE_VEHICULO".equals(jrField.getName())) {
+	    } else if("CLIENTE".equals(jrField.getName())){
+	    	return itemsSR.get(counter).getNombre_cliente();
+	    }else if ("NOMBRE_VEHICULO".equals(jrField.getName())) {
 	        return orden.get(counter).getDescripcion_problema();
 	    } else if ("REPUESTO".equals(jrField.getName())) {
 	        return repuesto.get(counter).getNombre_repuesto();
 	    } else if ("SERVICIO".equals(jrField.getName())) {
 	        return servicio.get(counter).getNombre_servicio();
+	    }else if("TOTAL".equals(jrField.getName())) {
+	        return itemsSR.get(counter).getTotal_costo();
 	    }
 	    return "";
 	}
