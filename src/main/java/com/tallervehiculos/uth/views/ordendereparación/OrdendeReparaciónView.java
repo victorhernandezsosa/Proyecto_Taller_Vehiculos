@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenReparacion_InteractorImp;
 import com.tallervehiculos.uth.data.entity.OrdenReparacionReport;
@@ -56,7 +58,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     private List<Vehiculo> vehiculo;
     private Integer control_id;
     //private Integer control = 0;
-    
+
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
@@ -87,7 +89,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         grid.addColumn(Orden_reparacion::getEstado_reparacion).setHeader("Estado Actual de Atención").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassName(Margin.Top.XLARGE);
-        
+
         GridContextMenu<Orden_reparacion> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {
     		if(this.orden.isEmpty()) {
@@ -124,7 +126,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
             try {
                 if (this.ordenes == null) {
                     this.ordenes = new Orden_reparacion();
-                    
+
                     this.ordenes.setVehiculo_id(this.vehiculo_id.getValue().getId_vehiculo());
                     this.ordenes.setDescripcion_problema(this.descripcion_problema.getValue());
                     this.ordenes.setEstado_reparacion(this.estado_reparacion.getValue());
@@ -145,13 +147,13 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
-        
+
         delete.addClickListener(e -> {
         	this.controlador.eliminarOrden_Reparacion(control_id);
             clearForm();
             refreshGrid();
         });
-        
+
     }
 
     private void generarReporteReparacion() {
@@ -187,7 +189,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
             notificacion.setDuration(10000);
             notificacion.open();
         }
-		
+
 	}
 
 	@Override
@@ -230,12 +232,12 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         descripcion_problema = new TextField("Descripción de Problema");
         estado_reparacion = new TextField("Estado Actual de Atención");
         formLayout.add(vehiculo_id, descripcion_problema, estado_reparacion);
-       
+
         id_orden.setPrefixComponent(VaadinIcon.EDIT.create());
         vehiculo_id.setPrefixComponent(VaadinIcon.CAR.create());
         descripcion_problema.setPrefixComponent(VaadinIcon.WARNING.create());
         estado_reparacion.setPrefixComponent(VaadinIcon.TOOLBOX.create());
-        
+
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
 
@@ -297,7 +299,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     	}
     	return seleccionado;
     }
-    
+
     @Override
 	public void refrescarGridOrden(List<Orden_reparacion> items_orden) {
     	if(items_orden != null && !items_orden.isEmpty()) {
@@ -318,6 +320,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     	return grid;
     }
 
+	
 	@Override
 	public void mostrarMensajeCreacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Exitoso!";
@@ -327,6 +330,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 		Notification.show(mensajeMostrar);
 	}
 
+	
 	@Override
 	public void mostrarMensajeAtualizacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Actualizado Exitosamente!";
@@ -336,6 +340,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 		Notification.show(mensajeMostrar);
 	}
 
+	
 	@Override
 	public void mostrarMensajeEliminacion(boolean respuesta) {
 		String mensajeMostrar = "Registro eliminado exitosamente!";
@@ -344,5 +349,5 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 		}
 		 Notification.show(mensajeMostrar);
 	}
-	
+
 }

@@ -11,7 +11,7 @@ public class OrdenSR /*extends AbstractEntity */{
     private String repuesto_id;
     private String nombre_cliente;
     private String total_costo;
-    
+
 
 	public String getNombre_cliente() {
 		return nombre_cliente;

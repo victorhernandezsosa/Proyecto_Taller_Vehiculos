@@ -19,6 +19,7 @@ public class OrdenVehiculos_InteractorImp implements OrdenVehiculos_Interactor {
 	}
 
 
+
 	
 	@Override
 	public void consultarVehiculo() {
@@ -29,6 +30,7 @@ public class OrdenVehiculos_InteractorImp implements OrdenVehiculos_Interactor {
 			e.printStackTrace();
 		}
 	}
+
 	
 	@Override
 	public void crearNuevoRegistro_Vehiculo(Vehiculo nuevo) {
@@ -40,6 +42,7 @@ public class OrdenVehiculos_InteractorImp implements OrdenVehiculos_Interactor {
 		}
 	}
 
+	
 	@Override
 	public void actualizarNuevoRegistro_Vehiculo(Vehiculo actualizar) {
 		try {
@@ -49,7 +52,7 @@ public class OrdenVehiculos_InteractorImp implements OrdenVehiculos_Interactor {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void eliminarRegistro_Vehiculo(Integer ID_VEHICULO) {
 		try {

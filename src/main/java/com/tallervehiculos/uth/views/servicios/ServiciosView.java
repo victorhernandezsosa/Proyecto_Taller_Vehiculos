@@ -237,12 +237,12 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
         Subservicio = new TextField("Subservicio");
         Costo = new TextField("Costo de Servicio");
         formLayout.add(Nombre_servicio, Subservicio, Costo);
-        
+
         //id_servicio.setPrefixComponent(VaadinIcon.EDIT.create());
         Nombre_servicio.setPrefixComponent(VaadinIcon.COG.create());
         Subservicio.setPrefixComponent(VaadinIcon.COGS.create());
         Costo.setPrefixComponent(VaadinIcon.MONEY.create());
-        
+
         editorContentLayout.add(formLayout);
 
         createButtonLayout(editorContentLayout);
@@ -292,6 +292,7 @@ public class ServiciosView extends Div implements HasComponents, HasStyle, Servi
     	return grid;
     }
 
+	
 	@Override
 	public void mostrarMensajeAtualizacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Actualizado Exitosamente!";

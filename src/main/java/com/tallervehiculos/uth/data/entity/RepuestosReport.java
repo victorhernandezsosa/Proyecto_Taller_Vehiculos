@@ -7,17 +7,17 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 public class RepuestosReport implements JRDataSource{
-	
+
 	private List<repuestos> repuesto;
 	private int counter = -1;
 	private int maxCounter = 0;
-	
+
 	public void setData(List<repuestos> repuesto) {
 		this.repuesto = repuesto;
 		this.maxCounter = this.repuesto.size()-1;
 	}
 
-	
+
 
 	public List<repuestos> getRepuesto() {
 		return repuesto;

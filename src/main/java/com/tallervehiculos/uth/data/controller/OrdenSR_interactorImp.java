@@ -7,7 +7,6 @@ import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseOrdenSR;
 import com.tallervehiculos.uth.data.entity.ResponseRepuestos;
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
-import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.ordensr.OrdenSRViewModel;
 
@@ -29,6 +28,7 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 	 * e) { e.printStackTrace(); } }
 	 */
 
+	
 	@Override
 	public void consultarOrdenSR() {
 		try {
@@ -39,6 +39,7 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 		}
 
 	}
+
 	
 	@Override
 	public void crearOrdenSR(OrdenSR nuevo) {
@@ -49,7 +50,7 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void eliminarOrdenSR(Integer ID_ORDENSR) {
 		try {
@@ -59,10 +60,11 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
+
+
+
+
+
 	
 	@Override
 	public void consultarOrden() {
@@ -74,6 +76,7 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 		}
 	}
 
+	
 	@Override
 	public void consultarServicios() {
 		try {
@@ -84,6 +87,7 @@ public class OrdenSR_interactorImp implements OrdenSR_interactor {
 		}
 	}
 
+	
 	@Override
 	public void consultarRepuesto() {
 		try {

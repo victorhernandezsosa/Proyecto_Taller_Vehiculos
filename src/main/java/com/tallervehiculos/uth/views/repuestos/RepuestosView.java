@@ -2,7 +2,6 @@ package com.tallervehiculos.uth.views.repuestos;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -80,7 +79,7 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
     	grid.addColumn(repuestos::getPrecio).setHeader("Precio");
     	grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
     	grid.addClassName(Margin.Top.XLARGE);
-    	
+
     	GridContextMenu<repuestos> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {
     		if(this.repuesto.isEmpty()) {
@@ -164,7 +163,7 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
             notificacion.setDuration(10000);
             notificacion.open();
         }
-		
+
 	}
 
 	@Override
@@ -222,13 +221,13 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
         nombreRepuesto = new TextField("Repuesto");
         precioRepuesto = new TextField("Precio");
         formLayout.add(nombreRepuesto, precioRepuesto);
-        
+
         //idRepuesto.setPrefixComponent(VaadinIcon.EDIT.create());
         nombreRepuesto.setPrefixComponent(VaadinIcon.STOCK.create());
         precioRepuesto.setPrefixComponent(VaadinIcon.MONEY.create());
-  
-        
-        
+
+
+
         editorContentLayout.add(formLayout);
 
         createButtonLayout(editorContentLayout);
@@ -282,6 +281,7 @@ public class RepuestosView extends Div implements HasComponents, HasStyle,Repues
     	return grid;
     }
 
+	
 	@Override
 	public void mostrarMensajeAtualizacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Actualizado Exitosamente!";

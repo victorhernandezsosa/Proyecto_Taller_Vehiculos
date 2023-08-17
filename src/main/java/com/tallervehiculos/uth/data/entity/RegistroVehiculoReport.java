@@ -7,17 +7,17 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 public class RegistroVehiculoReport implements JRDataSource{
-	
+
 	private List<Vehiculo> vehiculos;
 	private int counter = -1;
 	private int maxCounter = 0;
-	
+
 	public void setData(List<Vehiculo> vehiculos) {
 		this.vehiculos = vehiculos;
 		this.maxCounter = this.vehiculos.size() -1;
 	}
-	
-	
+
+
 
 	public List<Vehiculo> getVehiculos() {
 		return vehiculos;

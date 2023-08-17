@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.tallervehiculos.uth.data.entity.ResponseServicios;
 import com.tallervehiculos.uth.data.entity.Servicios;
-import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.servicios.ServiciosViewModel;
 
@@ -21,6 +20,7 @@ public class Servicios_interactorImp implements Servicios_interactor {
 	}
 
 
+	
 	@Override
 	public void consultarServicios() {
 		try {
@@ -30,6 +30,7 @@ public class Servicios_interactorImp implements Servicios_interactor {
 			e.printStackTrace();
 		}
 	}
+
 	
 	@Override
 	public void actualizarServicios(Servicios actualizar) {
@@ -40,6 +41,6 @@ public class Servicios_interactorImp implements Servicios_interactor {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 }

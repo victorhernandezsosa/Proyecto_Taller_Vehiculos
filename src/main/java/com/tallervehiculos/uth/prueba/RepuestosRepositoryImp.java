@@ -1,12 +1,5 @@
 package com.tallervehiculos.uth.prueba;
 
-import java.io.IOException;
-
-import com.tallervehiculos.uth.data.entity.ResponseRepuestos;
-
-import retrofit2.Call;
-import retrofit2.Response;
-
 public class RepuestosRepositoryImp {
 
 //	private static RepuestosRepositoryImp instance;

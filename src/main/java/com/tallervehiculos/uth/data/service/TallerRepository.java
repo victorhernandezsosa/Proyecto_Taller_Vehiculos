@@ -23,7 +23,7 @@ import retrofit2.http.Query;
 
 public interface TallerRepository {
 
-	
+
 	//VISTA DE REGISTRO DE VEHICULO
 	@Headers({
 	    "Content-Type: application/json",
@@ -40,7 +40,7 @@ public interface TallerRepository {
 	})
 	@POST("/pls/apex/allantorres_pa/vehiculos/registro_vehiculo/")
 	Call<ResponseBody> crearRegistro_vehiculo(@Body Vehiculo nuevo);
-	
+
 	@Headers({
 	    "Content-Type: application/json",
 	    "Accept-Charset: utf-8",
@@ -48,17 +48,17 @@ public interface TallerRepository {
 	})
 	@PUT("/pls/apex/allantorres_pa/vehiculos/registro_vehiculo/")
 	Call<ResponseBody> actualizarRegistro_vehiculo(@Body Vehiculo actualizar);
-	
+
 	@Headers({
 	    "Accept-Charset: utf-8",
 	    "User-Agent: Retrofit-Sample-App"
 	})
 	@DELETE("/pls/apex/allantorres_pa/vehiculos/registro_vehiculo/")
 	Call<ResponseBody> eliminarRegistro_Vehiculo(@Query("id_vehiculo") Integer ID_VEHICULO);
-	
-	
-	
-	
+
+
+
+
 	//VISTA DE ORDEN DE REPARACION
 	@Headers({
 	    "Content-Type: application/json",
@@ -67,7 +67,7 @@ public interface TallerRepository {
 	})
 	@GET("/pls/apex/allantorres_pa/vehiculos/orden_reparacion/")
 	Call<ResponseOrden> obtenerOrden();
-	
+
 	@Headers({
 	    "Content-Type: application/json",
 	    "Accept-Charset: utf-8",
@@ -75,7 +75,7 @@ public interface TallerRepository {
 	})
 	@POST("/pls/apex/allantorres_pa/vehiculos/orden_reparacion/")
 	Call<ResponseBody> crearOrden_Reparacion(@Body Orden_reparacion nuevo);
-	
+
 	@Headers({
 	    "Content-Type: application/json",
 	    "Accept-Charset: utf-8",
@@ -83,16 +83,16 @@ public interface TallerRepository {
 	})
 	@PUT("/pls/apex/allantorres_pa/vehiculos/orden_reparacion/")
 	Call<ResponseBody> actualizarOrden_Reparacion(@Body Orden_reparacion actualizar);
-	
+
 	@Headers({
 	    "Accept-Charset: utf-8",
 	    "User-Agent: Retrofit-Sample-App"
 	})
 	@DELETE("/pls/apex/allantorres_pa/vehiculos/orden_reparacion/")
 	Call<ResponseBody> eliminarOrden_Reparacion(@Query("id_orden") Integer ID_ORDEN);
-	
-	
-	
+
+
+
 	//VISTA DE ORDEN DE SERVICIOS
 	@Headers({
 	    "Content-Type: application/json",
@@ -109,11 +109,11 @@ public interface TallerRepository {
 	})
 	@PUT("/pls/apex/allantorres_pa/vehiculos/servicios/")
 	Call<ResponseBody> actualizarServicios(@Body Servicios actualizar);
-	
-	
-	
-	
-	
+
+
+
+
+
 	//VISTA DE ORDEN DE REPUESTOS
 	@Headers({
 	    "Content-Type: application/json",
@@ -130,10 +130,10 @@ public interface TallerRepository {
 	})
 	@PUT("/pls/apex/allantorres_pa/vehiculos/respuestos/")
 	Call<ResponseBody> actualizarRepuesto(@Body repuestos actualizar);
-	
-	
-	
-	
+
+
+
+
 	//VISTA DE ORDEN DE ORDEN DE SERVICIOS Y REPUESTOS (S/R)
 	@Headers({
 	    "Content-Type: application/json",
@@ -150,13 +150,13 @@ public interface TallerRepository {
 	})
 	@POST("/pls/apex/allantorres_pa/vehiculos/orden_sr/")
 	Call<ResponseBody> crearOrdenSR(@Body OrdenSR nuevo);
-	
+
 	@Headers({
 	    "Accept-Charset: utf-8",
 	    "User-Agent: Retrofit-Sample-App"
 	})
 	@DELETE("/pls/apex/allantorres_pa/vehiculos/orden_sr/")
 	Call<ResponseBody> eliminarOrdenSR(@Query("id_ordensr") Integer ID_ORDENSR);
-	
+
 }
 

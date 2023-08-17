@@ -7,7 +7,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 public class OrdenSR_Report implements JRDataSource{
-	
+
 	private List<Orden_reparacion> orden;
 	private List<OrdenSR> itemsSR;
 	private List<Servicios> servicio;
@@ -15,27 +15,27 @@ public class OrdenSR_Report implements JRDataSource{
 	//private List<Vehiculo> vehiculos;
 	private int counter = -1;
 	private int maxCounter = 0;
-	
+
 	public void setData(List<OrdenSR> itemsSR) {
 		this.itemsSR = itemsSR;
 		this.maxCounter = this.itemsSR.size() -1;
 	}
-	
+
 	public void setOrdenRepa(List<Orden_reparacion> orden) {
 		this.orden = orden;
 		this.maxCounter = this.orden.size() -1;
 	}
-	
+
 	public void setServi(List<Servicios> servicio) {
 		this.servicio = servicio;
 		this.maxCounter = this.servicio.size() -1;
 	}
-	
+
 	public void setRepuestos(List<repuestos> repuesto) {
 		this.repuesto = repuesto;
 		this.maxCounter = this.repuesto.size() -1;
 	}
-	
+
 
 	public List<repuestos> getRepuesto() {
 		return repuesto;

@@ -7,17 +7,17 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 public class OrdenReparacionReport implements JRDataSource{
-	
+
 	private List<Orden_reparacion> orden;
 	private int counter = -1;
 	private int maxCounter = 0;
-	
+
 	public void setData(List<Orden_reparacion> orden) {
 		this.orden = orden;
 		this.maxCounter = this.orden.size() -1;
 	}
-	
-	
+
+
 
 	public List<Orden_reparacion> getOrden() {
 		return orden;

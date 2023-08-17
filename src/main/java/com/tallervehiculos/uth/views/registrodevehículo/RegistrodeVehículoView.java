@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-import com.nimbusds.jose.util.events.Event;
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_Interactor;
 import com.tallervehiculos.uth.data.controller.OrdenVehiculos_InteractorImp;
 import com.tallervehiculos.uth.data.entity.RegistroVehiculoReport;
@@ -94,9 +94,9 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
                 .stream());*/
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassName(Margin.Top.XLARGE);
-        
-        
-        
+
+
+
         GridContextMenu<Vehiculo> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {
     		if(this.vehiculos.isEmpty()) {
@@ -155,13 +155,13 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
-        
+
         delete.addClickListener(e -> {
         	this.controlador.eliminarRegistro_Vehiculo(control_id);
             clearForm();
             refreshGrid();
         });
-        
+
     }
 
     private void generarReporteRegistro() {
@@ -197,7 +197,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
             notificacion.setDuration(10000);
             notificacion.open();
         }
-		
+
 	}
 
 	@Override
@@ -242,16 +242,16 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
         modelo = new TextField("Modelo");
         placa = new TextField("Placa");
         formLayout.add(nombre_cliente, marca, modelo, placa);
-        
+
         //id_vehiculo.setPrefixComponent(VaadinIcon.EDIT.create());
         nombre_cliente.setPrefixComponent(VaadinIcon.USER.create());
         marca.setPrefixComponent(VaadinIcon.INFO_CIRCLE_O.create());
         modelo.setPrefixComponent(VaadinIcon.INFO_CIRCLE_O.create());
         placa.setPrefixComponent(VaadinIcon.PASSWORD.create());
         editorDiv.add(formLayout);
-        
- 
-        
+
+
+
         createButtonLayout(editorLayoutDiv);
 
         splitLayout.addToSecondary(editorLayoutDiv);
@@ -315,6 +315,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
     	return grid;
     }
 
+	
 	@Override
 	public void mostrarMensajeCreacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Exitoso!";
@@ -324,6 +325,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		 Notification.show(mensajeMostrar);
 	}
 
+	
 	@Override
 	public void mostrarMensajeEliminacion(boolean respuesta) {
 		String mensajeMostrar = "Registro eliminado exitosamente!";
@@ -334,6 +336,7 @@ public class RegistrodeVehículoView extends Div implements BeforeEnterObserver,
 		 this.controlador.consultarVehiculo();
 	}
 
+	
 	@Override
 	public void mostrarMensajeAtualizacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Actualizado Exitosamente!";

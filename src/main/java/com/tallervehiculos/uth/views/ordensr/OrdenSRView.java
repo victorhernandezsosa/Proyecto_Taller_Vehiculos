@@ -7,21 +7,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactor;
 import com.tallervehiculos.uth.data.controller.OrdenSR_interactorImp;
 import com.tallervehiculos.uth.data.entity.OrdenSR;
 import com.tallervehiculos.uth.data.entity.OrdenSR_Report;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.data.entity.Servicios;
-import com.tallervehiculos.uth.data.entity.ServiciosReport;
 import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.entity.repuestos;
 import com.tallervehiculos.uth.data.service.ReportGenerator;
 import com.tallervehiculos.uth.views.MainLayout;
-import com.tallervehiculos.uth.views.registrodevehículo.RegistrodeVehículoView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -33,7 +30,6 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -72,14 +68,14 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 	private OrdenSR_interactor controlador;
 	private OrdenSR ordensr;
-	
+
 	private Button pay;
 	private Button cancel;
 
 	public OrdenSRView() {
 		itemsSR=new ArrayList<>();
 		this.controlador = new OrdenSR_interactorImp(this);
-		
+
 		// this.controlador.consultarOrdenSR();
 		this.controlador.consultarOrden();
 		this.controlador.consultarRepuesto();
@@ -101,8 +97,8 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		layout.setSpacing(false);
 
 		add(layout);
-		
-		
+
+
 		pay.addClickListener(e -> {
 
             if (this.ordensr == null) {
@@ -112,12 +108,12 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
                 this.ordensr.setServicio_id(this.servicio_id.getValue().getId_servicio());
                 this.ordensr.setRepuesto_id(this.repuesto_id.getValue().getId_repuesto());
                 this.controlador.crearOrdenSR(ordensr);
-            } 
+            }
             clearForm();
             refreshGrid();
     });
-		
-		cancel.addClickListener(e -> {        	
+
+		cancel.addClickListener(e -> {
             clearForm();
             refreshGrid();
         });
@@ -156,7 +152,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		orden_id.setRequiredIndicatorVisible(true);
 		orden_id.setItems(orden);
 		orden_id.setItemLabelGenerator(Orden_reparacion::getDescripcion_problema);
-      
+
 		Div subSectionTwo = new Div();
 		subSectionTwo.addClassNames(Display.FLEX, FlexWrap.WRAP, Gap.MEDIUM);
 
@@ -169,7 +165,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		repuesto_id.setRequiredIndicatorVisible(true);
 		repuesto_id.setItems(repuesto);
 		repuesto_id.setItemLabelGenerator(repuestos::getNombre_repuesto);
-		
+
 		orden_id.setPrefixComponent(VaadinIcon.FILE_TEXT_O.create());
 		servicio_id.setPrefixComponent(VaadinIcon.COG_O.create());
 		repuesto_id.setPrefixComponent(VaadinIcon.PACKAGE.create());
@@ -181,7 +177,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 	}
 
 	private Component createGrid() {
-		
+
 		H4 header = new H4("Detalles de Orden S/R");
 		header.addClassName("orden-sr-view-h4-1");
 		header.addClassNames(Margin.Bottom.NONE, Margin.Top.XLARGE, FontSize.XXXLARGE, AlignItems.CENTER);
@@ -205,7 +201,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
                 });
                     button.setIcon(new Icon(VaadinIcon.TRASH));
                 })).setHeader("Borrar");
-		
+
 		GridContextMenu<OrdenSR> menu = grid.addContextMenu();
     	menu.addItem("Generar Reporte", event -> {
     		if(this.itemsSR.isEmpty()) {
@@ -215,13 +211,13 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
             	generarReporteServicios();
         	}
     	});
-		
+
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.addClassNames(LumoUtility.BorderColor.CONTRAST_10, AlignItems.CENTER, JustifyContent.CENTER, Margin.Top.XLARGE);
-		
+
 		VerticalLayout nose = new VerticalLayout(header, grid);
 		nose.setAlignItems(FlexComponent.Alignment.STRETCH);
-		
+
 		return nose;
 	}
 
@@ -269,14 +265,14 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 		cancel = new Button("Cancelar");
 		cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-		
+
 		pay = new Button("Guardar Orden");
 		pay.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 		footer.add(cancel, pay);
 		return footer;
 	}
-	
+
     private void refreshGrid() {
     	this.controlador.consultarOrdenSR();
         grid.select(null);
@@ -313,6 +309,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 
 	}
 
+	
 	@Override
 	public void mostrarMensajeCreacion(boolean respuesta) {
 		String mensajeMostrar = "Registro Exitoso!";
@@ -322,6 +319,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
 		 Notification.show(mensajeMostrar);
 	}
 
+	
 	@Override
 	public void mostrarMensajeEliminacion(boolean respuesta) {
 		String mensajeMostrar = "Registro eliminado exitosamente!";

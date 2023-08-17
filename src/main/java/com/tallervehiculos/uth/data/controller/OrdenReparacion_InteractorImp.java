@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.tallervehiculos.uth.data.entity.Orden_reparacion;
 import com.tallervehiculos.uth.data.entity.ResponseOrden;
 import com.tallervehiculos.uth.data.entity.ResponseTaller;
-import com.tallervehiculos.uth.data.entity.Vehiculo;
 import com.tallervehiculos.uth.data.service.TallerRepositoryImp;
 import com.tallervehiculos.uth.views.ordendereparación.OrdendeReparacionViewModel;
 
@@ -31,7 +30,7 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 		}
 
 	}
-	
+
 	@Override
 	public void crearNuevaOrden_Reparacion(Orden_reparacion nuevo) {
 		try {
@@ -42,6 +41,7 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 		}
 	}
 
+	
 	@Override
 	public void actualizarNuevaOrden_Reparacion(Orden_reparacion actualizar) {
 		try {
@@ -51,7 +51,7 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void eliminarOrden_Reparacion(Integer ID_ORDEN) {
 		try {
@@ -61,10 +61,10 @@ public class OrdenReparacion_InteractorImp  implements OrdenReparacion_Interacto
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	//CONSULTA DE VEHICULOS PARA CARGAR COMBOBOX
 	@Override
 	public void consultarVehiculo() {

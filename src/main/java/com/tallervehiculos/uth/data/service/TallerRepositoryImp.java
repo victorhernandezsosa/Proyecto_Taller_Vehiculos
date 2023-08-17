@@ -67,8 +67,8 @@ public class TallerRepositoryImp {
 		return response.isSuccessful();
 	}
 
-	
-	
+
+
 	// VISTA DE ORDEN DE REPARACION
 	public ResponseOrden getOrden() throws IOException {
 		Call<ResponseOrden> call = taller.getDatabaseService().obtenerOrden();
@@ -96,11 +96,11 @@ public class TallerRepositoryImp {
 		Call<ResponseBody> call = taller.getDatabaseService().eliminarOrden_Reparacion(ID_ORDEN);
 		Response<ResponseBody> response = call.execute(); // AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
 		return response.isSuccessful();
-		
+
 	}
 
 
-	
+
 	// VISTA DE ORDEN DE SERVICIOS
 	public ResponseServicios getServicios() throws IOException {
 		Call<ResponseServicios> call = taller.getDatabaseService().obtenerServicios();
@@ -117,8 +117,8 @@ public class TallerRepositoryImp {
 		Response<ResponseBody> response = call.execute(); // AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
 		return response.isSuccessful();
 	}
-	
-	
+
+
 	// VISTA DE ORDEN DE ORDEN DE SERVICIOS Y REPUESTOS (S/R)
 	public ResponseOrdenSR getOrdenSR() throws IOException {
 		Call<ResponseOrdenSR> call = taller.getDatabaseService().obtenerOrdenSR();
@@ -129,21 +129,21 @@ public class TallerRepositoryImp {
 			return null;
 		}
 	}
-	
+
 	public boolean createOrdenSR(OrdenSR nuevo) throws IOException {
 		Call<ResponseBody> call = taller.getDatabaseService().crearOrdenSR(nuevo);
 		Response<ResponseBody> response = call.execute(); // AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
 		return response.isSuccessful();
 	}
-	
+
 	public boolean deleteOrdenSR(Integer ID_ORDENSR) throws IOException {
 		Call<ResponseBody> call = taller.getDatabaseService().eliminarOrdenSR(ID_ORDENSR);
 		Response<ResponseBody> response = call.execute(); // AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
 		return response.isSuccessful();
-		
+
 	}
-	
-	
+
+
 
 	// VISTA DE ORDEN DE REPUESTOS
 	public ResponseRepuestos getRepuesto() throws IOException {
@@ -155,7 +155,7 @@ public class TallerRepositoryImp {
 			return null;
 		}
 	}
-	
+
 	public boolean updateRepuesto(repuestos actualizar) throws IOException {
 		Call<ResponseBody> call = taller.getDatabaseService().actualizarRepuesto(actualizar);
 		Response<ResponseBody> response = call.execute(); // AQUI ES DONDE SE CONSULTA A LA URL DE LA BASE DE DATOS
