@@ -23,6 +23,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
@@ -55,7 +56,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     private TextField descripcion_problema;
     private TextField estado_reparacion;
     private List<Orden_reparacion> orden;
-    private List<Vehiculo> vehiculo;
+    private List<Vehiculo> vehiculos;
     private Integer control_id;
     //private Integer control = 0;
 
@@ -84,7 +85,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
         // Configure Grid
         grid.addColumn(Orden_reparacion::getId_orden).setHeader("ID de Orden").setAutoWidth(true);
-        grid.addColumn(Orden_reparacion::getVehiculo_id).setHeader("ID de Vehículo").setAutoWidth(true);
+        grid.addColumn(ordenReparacion -> findPlacaById(ordenReparacion.getVehiculo_id())).setHeader("Placa de Vehículo").setAutoWidth(true);
         grid.addColumn(Orden_reparacion::getDescripcion_problema).setHeader("Descripción de Problema").setAutoWidth(true);
         grid.addColumn(Orden_reparacion::getEstado_reparacion).setHeader("Estado Actual de Atención").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -163,6 +164,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
         parametros.put("LOGO_BAR","barcode.png");
         OrdenReparacionReport datasource = new OrdenReparacionReport();
         datasource.setData(orden);
+        datasource.setPlacavehiculo(vehiculos);
         String rutaPDF = generador.generarReportePDF("reporte_Orden", parametros, datasource);
 
         if (rutaPDF != null) {
@@ -290,7 +292,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 
     private Vehiculo buscarVehiculoSeleccionado(Integer id_vehiculo) {
     	Vehiculo seleccionado = new Vehiculo();
-    	for(Vehiculo v : vehiculo) {
+    	for(Vehiculo v : vehiculos) {
     		if(v.getId_vehiculo() == id_vehiculo) {
     			seleccionado = v;
     			//control = 1;
@@ -313,7 +315,7 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
     public void refrescarComboBoxVehiculos(List<Vehiculo> items) {
     	vehiculo_id.setItems(items);
     	vehiculo_id.setItemLabelGenerator(Vehiculo::getPlaca);
-    	this.vehiculo = items;
+    	this.vehiculos = items;
     }
 
     public Grid<Orden_reparacion> getGrid(){
@@ -348,6 +350,15 @@ public class OrdendeReparaciónView extends Div implements BeforeEnterObserver, 
 			mensajeMostrar = "Registro no pudo ser eliminado";
 		}
 		 Notification.show(mensajeMostrar);
+	}
+	
+	private String findPlacaById(Integer vehiculoId) {
+	    for (Vehiculo v : vehiculos) {
+	        if (v.getId_vehiculo() == vehiculoId) {
+	            return v.getPlaca();
+	        }
+	    }
+	    return "";
 	}
 
 }

@@ -9,6 +9,7 @@ import net.sf.jasperreports.engine.JRField;
 public class OrdenReparacionReport implements JRDataSource{
 
 	private List<Orden_reparacion> orden;
+	private List<Vehiculo> vehiculo;
 	private int counter = -1;
 	private int maxCounter = 0;
 
@@ -16,8 +17,21 @@ public class OrdenReparacionReport implements JRDataSource{
 		this.orden = orden;
 		this.maxCounter = this.orden.size() -1;
 	}
+	
+	public void setPlacavehiculo(List<Vehiculo> vehiculo) {
+		this.vehiculo = vehiculo;
+		this.maxCounter = this.vehiculo.size() -1;
+	}
+	
+	
+	
+	public List<Vehiculo> getVehiculo() {
+		return vehiculo;
+	}
 
-
+	public void setVehiculo(List<Vehiculo> vehiculo) {
+		this.vehiculo = vehiculo;
+	}
 
 	public List<Orden_reparacion> getOrden() {
 		return orden;
@@ -69,7 +83,7 @@ public class OrdenReparacionReport implements JRDataSource{
 		if("ID".equals(jrField.getName())) {
 			return orden.get(counter).getId_orden().toString();
 		}else if("VEHICULO_ID".equals(jrField.getName())) {
-			return orden.get(counter).getVehiculo_id().toString();
+			return vehiculo.get(counter).getPlaca();
 		}else if("PROBLEMA".equals(jrField.getName())) {
 			return orden.get(counter).getDescripcion_problema();
 		}else if("ESTADO".equals(jrField.getName())) {

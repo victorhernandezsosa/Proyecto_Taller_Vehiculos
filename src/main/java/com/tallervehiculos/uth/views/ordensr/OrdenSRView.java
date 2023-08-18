@@ -227,11 +227,11 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
         parametros.put("LOGO_DIR","logo.png");
         parametros.put("LOGO_BAR","barcode.png");
         OrdenSR_Report datasource = new OrdenSR_Report();
-        datasource.setData(itemsSR);
-        datasource.setServi(servicio);
+        datasource.setData(itemsSR,orden,servicio,repuesto);
+       /* datasource.setServi(servicio);
         datasource.setOrdenRepa(orden);
         datasource.setRepuestos(repuesto);
-        //datasource.setVehiculo(vehiculos);
+        //datasource.setVehiculo(vehiculos);*/
         String rutaPDF = generador.generarReportePDF("reporte_ordensr", parametros, datasource);
 
         if (rutaPDF != null) {
@@ -259,6 +259,7 @@ public class OrdenSRView extends Div implements OrdenSRViewModel {
             notificacion.open();
         }
     }
+	
 	private Footer createFooter() {
 		Footer footer = new Footer();
 		footer.addClassNames(Display.FLEX, AlignItems.CENTER, JustifyContent.BETWEEN, Margin.Vertical.MEDIUM);
